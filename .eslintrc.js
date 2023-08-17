@@ -6,7 +6,7 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
+    // "plugin:react/recommended",
     "plugin:prettier/recommended",
   ],
   overrides: [
@@ -31,5 +31,6 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
+    "no-unused-vars": ["warn", {args: "after-used"}],
   },
 };
