@@ -19,3 +19,5 @@
 ## Resource
 1. MDN
    1. https://developer.mozilla.org/en-US/
+2, Music wave
+     https://wavesurfer-js.org/
