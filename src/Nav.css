@@ -1,0 +1,49 @@
+.container {
+  height: 100vh;
+  display: flex;
+  background-color: #ffffff;
+}
+
+.nav-sidebar {
+  width: 250px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.nav-header {
+  padding: 20px 40px;
+  font-size: 30px;
+  color: #9747ff;
+  font-weight: 500;
+}
+
+.nav-sidebar .MuiListItem-root {
+  padding-left: 40px;
+  color: #262626;
+}
+
+.nav-sidebar .MuiListItemIcon-root {
+  min-width: 40px;
+  color: #1a1a1a;
+}
+
+/* General style for all buttons */
+.button-base {
+  width: 90%;
+}
+
+/* Hover effect */
+.button-base:hover {
+  background-color: #f6f6f6;
+  border-radius: 12px;
+}
+
+/* Active state */
+.button-base.active {
+  background-color: #f6f6f6;
+  border-radius: 12px;
+}
+
+.nav-sidebar .MuiDivider-root {
+  margin: 12px 30px;
+}
