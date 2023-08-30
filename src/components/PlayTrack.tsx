@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -18,28 +19,45 @@ import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite
 import { Waveform } from "./Waveform"
 import { downloadMusic } from "../apis/MeidaApis"
 import { useTrack } from '../hook/TrackHook';
+import PlayMusicBar from "./PlayMusicBar";
 
-export default function PlayMusicBar() {
-    const { setCurrentTrack, play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist } = useTrack();
-    const audio = useRef(new Audio(currentMusicUrl));
-    // const [play, setPlay] = useState(false);
+type PlayTrackProps = {
+    musicResourceId: number;
+    title: string;
+    artist: string;
+    musicUrl: string;
+};
+
+export default function PlayTrack(props: PlayTrackProps) {
+    const audio = useRef(new Audio(props.musicUrl));
+    const [isPlaying, setIsPlaying] = useState(false);
+    const MusicUrl = props.musicUrl;
+    const MusicResourceId = props.musicResourceId
     //const [curTime, setCurTime] = useState(0);
-    const [duration, setDuration] = useState(0);
     //const [position, setPosition] = React.useState(32);
-    const [volume, setVolume] = useState(30);
+    const [duration, setDuration] = useState(0);
+    const { setCurrentTrack, play, pause } = useTrack();
+    //const durationDisplayRef = useRef<HTMLSpanElement | null>(null);
     const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
+    const handlePlayClick = useCallback(() => {
+        setCurrentTrack(MusicResourceId, MusicUrl, props.title, props.artist);
+        setIsPlaying(true);
+        play();
+    }, [MusicResourceId, MusicUrl, props.title, props.artist, play]);
 
-    const handleSeek = (time: number) => {
-        if (audio) {
+    const handlePauseClick = useCallback(() => {
+        setIsPlaying(false);
+        pause();
+    }, [pause]);
+
+    const handleSeek = useCallback((time: number) => {
+        if (audio.current) {
             audio.current.currentTime = time;
             console.log("Jumping to:", time, "seconds");
         }
-    };
+    }, [audio]);
 
-    // const handleTimeUpdate = () => {
-    //     setCurTime(audio.current.currentTime);
-    // };
 
     function formatDuration(seconds: number) {
         const minutes = Math.floor(seconds / 60);
@@ -56,19 +74,42 @@ export default function PlayMusicBar() {
     //     setPosition(newPosition);
     // };
 
-    const handleChange = (event: Event, newValue: number | number[]) => {
-        const newVolume = Array.isArray(newValue) ? newValue[0] : newValue;
-        setVolume(newVolume);
-    };
+    const TinyText = styled(Typography)({
+        fontSize: '1.0rem',
+        opacity: 0.38,
+        fontWeight: 500,
+        letterSpacing: 0.2,
+    });
 
-    const handlePlayClick = () => {
-        setCurrentTrack(currentTrackId, currentMusicUrl, title, artist);
-        play();
-    };
+    // useEffect(() => {
+    //     const handleLoadedMetadata = () => {
+    //         if (durationDisplayRef.current && audio.current) {
+    //             console.log("Duration in seconds:", audio.current.duration);
+    //             durationDisplayRef.current.textContent = formatDuration(audio.current.duration);
+    //         }
+    //     };
 
-    const handlePauseClick = () => {
-        pause();
-    };
+
+    //     audio.current.addEventListener('loadedmetadata', handleLoadedMetadata);
+
+    //     return () => {
+    //         audio.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+    //     };
+    // }, []);
+
+    useEffect(() => {
+        const handleTimeUpdate = () => {
+            if (positionDisplayRef.current && audio.current) {
+                positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
+            }
+        };
+
+        audio.current.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            audio.current.removeEventListener('timeupdate', handleTimeUpdate);
+        };
+    }, []);
 
     useEffect(() => {
         if (isPlaying) {
@@ -79,80 +120,8 @@ export default function PlayMusicBar() {
     }, [isPlaying]);
 
     useEffect(() => {
-        const handleTimeUpdate = () => {
-            console.log("Time updated:", audio.current.currentTime);
-            if (positionDisplayRef.current && audio.current) {
-                positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
-            }
-        };
-        audio.current.addEventListener('timeupdate', handleTimeUpdate);
-
-        return () => {
-            audio.current.removeEventListener('timeupdate', handleTimeUpdate);
-        };
-    }, []);
-
-    // useEffect(() => {
-    //     const handleTimeUpdate = () => {
-    //         setCurTime(audio.current.currentTime);
-    //     };
-    //     audio.current.addEventListener('timeupdate', handleTimeUpdate);
-
-    //     return () => {
-    //         audio.current.removeEventListener('timeupdate', handleTimeUpdate);
-    //     };
-    // }, []);
-
-
-    // useEffect(() => {
-    //     const updateCurTime = () => setCurTime(audio.current.currentTime);
-    //     audio.current.addEventListener("timeupdate", updateCurTime);
-
-    //     return () => {
-    //         audio.current.removeEventListener("timeupdate", updateCurTime);
-    //     };
-    // }, [audio]);
-
-    // useEffect(() => {
-    //     audio.current.onerror = () => {
-    //         console.error(`Failed to play ${currentMusicUrl}`);
-    //         // set an error state and display it to the user
-    //     };
-    // }, [audio, currentMusicUrl]);
-
-    useEffect(() => {
-        // Create or re-create the audio object
-        const newAudio = new Audio(currentMusicUrl);
-        audio.current = newAudio;
-
-        // const handleTimeUpdate = () => {
-        //     setCurTime(newAudio.currentTime);
-        // };
-
-        const handleTimeUpdate = () => {
-            console.log("Time updated:", audio.current.currentTime);
-            if (positionDisplayRef.current && audio.current) {
-                positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
-            }
-        };
-
-        // Attach the event listener to the new audio object
-        newAudio.addEventListener('timeupdate', handleTimeUpdate);
-
-        return () => {
-            newAudio.removeEventListener('timeupdate', handleTimeUpdate);
-            newAudio.pause();
-            newAudio.currentTime = 0;
-        };
-    }, [currentMusicUrl]);
-
-
-    const TinyText = styled(Typography)({
-        fontSize: '1.0rem',
-        opacity: 0.38,
-        fontWeight: 500,
-        letterSpacing: 0.2,
-    });
+        audio.current.src = props.musicUrl;
+    }, [props.musicUrl]);
 
     const theme = createTheme({
         components: {
@@ -167,14 +136,11 @@ export default function PlayMusicBar() {
     });
 
     return (
-        <div className="PlayMusicBar">
+        <div className="PlayTrack">
             <ThemeProvider theme={theme}>
                 <Toolbar sx={{ bgcolor: '#FFF' }}>
 
                     <div className="PlaysButtons">
-                        <IconButton className="SkipPrev">
-                            <SkipPreviousIcon sx={{ color: '#000000', fontSize: "20px" }} />
-                        </IconButton>
 
                         <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
                             {isPlaying ? (
@@ -184,9 +150,6 @@ export default function PlayMusicBar() {
                             )}
                         </Button>
 
-                        <IconButton className="SkipNext">
-                            <SkipNextIcon sx={{ color: '#000000', fontSize: "20px" }} />
-                        </IconButton>
                     </div>
 
                     <div className="MusicInfo">
@@ -196,11 +159,11 @@ export default function PlayMusicBar() {
 
                         <div className="TextInfo">
                             <div className="SongName">
-                                {title}
+                                {props.title}
                             </div>
 
                             <div className="ArtistName">
-                                {artist}
+                                {props.artist}
                             </div>
                         </div>
                     </div>
@@ -209,32 +172,29 @@ export default function PlayMusicBar() {
                     <Waveform
                         onSeek={handleSeek}
                         playing={isPlaying}
-                        url={currentMusicUrl}
-                        volume={volume / 100}
+                        url={MusicUrl}
+                        volume={0}
                         onDurationChange={handleDurationChange}
                     //onPositionChange={handlePositionChange}
                     />
 
 
                     <div className="DurationTime">
+                        {/* <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(position)}</TinyText>
+                        <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(duration)}</TinyText> */}
                         <TinyText ref={positionDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
                             {formatDuration(0)}
                         </TinyText>
                         <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(duration)}</TinyText>
+                        {/* <TinyText ref={durationDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
+                            {formatDuration(0)}  
+                        </TinyText> */}
                     </div>
 
-                    <div className="VolumeControl">
-                        <Box sx={{ width: 200, ml: 1 }}>
-                            <Stack spacing={2} direction="row" alignItems="center">
-                                <VolumeUp sx={{ color: '#9747FF', fontSize: "17px" }} />
-                                <Slider aria-label="Volume" sx={{ color: '#9747FF', fontSize: "17px" }} value={volume} onChange={handleChange} />
-                            </Stack>
-                        </Box>
-                    </div>
 
 
                     <div className="MusicAction">
-                        <IconButton onClick={() => downloadMusic(currentTrackId)}>
+                        <IconButton onClick={() => downloadMusic(MusicResourceId)}>
                             <GetAppIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
                         </IconButton>
 
