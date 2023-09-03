@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { Slider, Stack, Toolbar } from '@mui/material';
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import { VolumeUp } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { styled } from '@mui/material/styles';
@@ -20,12 +15,18 @@ import { Waveform } from "./Waveform"
 import { downloadMusic } from "../apis/MeidaApis"
 import { useTrack } from '../hook/TrackHook';
 import PlayMusicBar from "./PlayMusicBar";
+import "../styles/PlayTrack.css";
+import "../styles/TrackWaveform.css";
 
 type PlayTrackProps = {
+    trackId: number;
     musicResourceId: number;
+    imageUrl: string;
     title: string;
     artist: string;
+    artistId: number;
     musicUrl: string;
+    duration: number;
 };
 
 export default function PlayTrack(props: PlayTrackProps) {
@@ -128,7 +129,7 @@ export default function PlayTrack(props: PlayTrackProps) {
             MuiSvgIcon: {
                 styleOverrides: {
                     root: {
-                        color: '#FFF'
+                        color: '#F1F1F1'
                     }
                 }
             }
@@ -136,83 +137,86 @@ export default function PlayTrack(props: PlayTrackProps) {
     });
 
     return (
-        <div className="PlayTrack">
-            <ThemeProvider theme={theme}>
-                <Toolbar sx={{ bgcolor: '#FFF' }}>
+        <div className="playtrack-hover">
+            <div className="PlayTrack">
+                <ThemeProvider theme={theme}>
+                    <Toolbar sx={{ bgcolor: '#F1F1F1' }}>
 
-                    <div className="PlaysButtons">
+                        <div className="PlaysButtons">
 
-                        <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
-                            {isPlaying ? (
-                                <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
-                            ) : (
-                                <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
-                            )}
-                        </Button>
-
-                    </div>
-
-                    <div className="MusicInfo">
-                        <div className="SongImage">
+                            <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
+                                {isPlaying ? (
+                                    <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                                ) : (
+                                    <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                                )}
+                            </Button>
 
                         </div>
 
-                        <div className="TextInfo">
-                            <div className="SongName">
-                                {props.title}
+                        <div className="MusicInfo">
+                            <div className="SongImage">
+
                             </div>
 
-                            <div className="ArtistName">
-                                {props.artist}
+                            <div className="TextInfo">
+                                <div className="SongName">
+                                    {props.title}
+                                </div>
+
+                                <div className="ArtistName">
+                                    {props.artist}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <Waveform
-                        onSeek={handleSeek}
-                        playing={isPlaying}
-                        url={MusicUrl}
-                        volume={0}
-                        onDurationChange={handleDurationChange}
-                    //onPositionChange={handlePositionChange}
-                    />
+                        <Waveform
+                            onSeek={handleSeek}
+                            playing={isPlaying}
+                            url={MusicUrl}
+                            volume={0}
+                            onDurationChange={handleDurationChange}
+                            curComponent={'PlayTrack'}
+                        //onPositionChange={handlePositionChange}
+                        />
 
 
-                    <div className="DurationTime">
-                        {/* <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(position)}</TinyText>
+                        <div className="DurationTime">
+                            {/* <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(position)}</TinyText>
                         <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(duration)}</TinyText> */}
-                        <TinyText ref={positionDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
-                            {formatDuration(0)}
-                        </TinyText>
-                        <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(duration)}</TinyText>
-                        {/* <TinyText ref={durationDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
+                            <TinyText ref={positionDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
+                                {formatDuration(0)}
+                            </TinyText>
+                            <TinyText sx={{ color: '#000000', fontSize: "10px" }}>{formatDuration(duration)}</TinyText>
+                            {/* <TinyText ref={durationDisplayRef} sx={{ color: '#000000', fontSize: "10px" }}>
                             {formatDuration(0)}  
                         </TinyText> */}
-                    </div>
+                        </div>
 
 
 
-                    <div className="MusicAction">
-                        <IconButton onClick={() => downloadMusic(MusicResourceId)}>
-                            <GetAppIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
-                        </IconButton>
+                        <div className="MusicAction">
+                            <IconButton onClick={() => downloadMusic(MusicResourceId)}>
+                                <GetAppIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
+                            </IconButton>
 
-                        <IconButton>
-                            <CreateNewFolderOutlinedIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
-                        </IconButton>
+                            <IconButton>
+                                <CreateNewFolderOutlinedIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
+                            </IconButton>
 
-                        <IconButton>
-                            <FavoriteBorderIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
-                        </IconButton>
+                            <IconButton>
+                                <FavoriteBorderIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
+                            </IconButton>
 
-                        <IconButton>
-                            <ShareOutlinedIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
-                        </IconButton>
-                    </div>
+                            <IconButton>
+                                <ShareOutlinedIcon sx={{ color: '#9747FF', ml: 1, fontSize: "17px" }} />
+                            </IconButton>
+                        </div>
 
-                </Toolbar>
-            </ThemeProvider>
-        </div >
+                    </Toolbar>
+                </ThemeProvider>
+            </div >
+        </div>
     );
 }

@@ -1,7 +1,7 @@
 .waveform {
     margin-left: auto;
     margin-right: auto;
-    background-color: #FFF;
+
     display: block;
     position: relative;
     user-select: none;
@@ -9,4 +9,12 @@
     overflow: hidden;
     max-width: 50.33%;
     min-width: 40.33%;
+}
+
+.waveform.PlayTrack {
+    background-color: #F1F1F1;
+}
+
+.waveform.PlayMusicBar {
+    background-color: #FFF;
 }

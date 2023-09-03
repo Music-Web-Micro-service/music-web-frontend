@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
+import "../styles/MusicBarWaveform.css";
 
 type WaveformProps = {
     onSeek: (time: number) => void;
     playing: boolean;
     url: string;
     volume: number;
+    curComponent: string;
     onDurationChange: (duration: number) => void;
-    //onPositionChange: (position: number) => void;
 };
 
 const useWavesurfer = (containerRef: any, url: string) => {
@@ -35,7 +36,8 @@ const useWavesurfer = (containerRef: any, url: string) => {
     return wavesurfer;
 }
 
-const WaveformComponent: React.FC<WaveformProps> = ({ onSeek, playing, url, volume, onDurationChange }) => {
+const WaveformComponent: React.FC<WaveformProps> = ({ onSeek, playing, url, volume, curComponent, onDurationChange }) => {
+    const backgroundColor = curComponent === "PlayTrack" ? "#F1F1F1" : "#FFF";
     const waveformRef = useRef<HTMLDivElement | null>(null);
     const wavesurfer = useWavesurfer(waveformRef, url);
 
@@ -95,7 +97,7 @@ const WaveformComponent: React.FC<WaveformProps> = ({ onSeek, playing, url, volu
         }
     }, [wavesurfer, playing, volume]);
 
-    return <div className="waveform" ref={waveformRef}></div>;
+    return <div className="waveform" ref={waveformRef} ></div>;
 };
 
 export const Waveform = React.memo(WaveformComponent);

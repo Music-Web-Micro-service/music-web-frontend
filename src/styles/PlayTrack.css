@@ -1,0 +1,97 @@
+.playtrack-hover:hover {
+    background-color: rgb(255, 140, 0);
+}
+
+.PlayMusicBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-shrink: 0;
+    margin: 0;
+    height: 70px;
+    background: #F1F1F1;
+}
+
+.PlaysButton,
+.MusicInfo,
+.DurationTime,
+.MusicAction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PlaysButtons {
+    padding-left: 0px;
+    min-width: 140px;
+}
+
+.SkipPrev {}
+
+.SkipNext {}
+
+.PauseButton {}
+
+.MusicInfo {
+    padding-left: 20px;
+}
+
+.DurationTime {
+    margin-right: 10px;
+    color: #746F6F;
+    font-family: Inter;
+    font-size: 5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.VolumeControl {
+    flex-shrink: 0;
+    /* Prevents the container from shrinking */
+    padding-right: 10px;
+    /* Adds some space between the volume and the music actions */
+}
+
+.MusicAction {
+    flex: none;
+    padding-right: 10px;
+}
+
+.TextInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10px;
+    height: 50px;
+
+}
+
+.SongImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background: #D9D9D9;
+    flex-shrink: 0;
+}
+
+.SongName {
+    color: #000;
+    font-family: Mulish;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    max-width: 150px;
+    min-width: 110px;
+}
+
+.ArtistName {
+    color: #000;
+    font-family: Mulish;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

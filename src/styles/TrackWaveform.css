@@ -1,0 +1,11 @@
+.waveform {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    position: relative;
+    user-select: none;
+    cursor: auto;
+    overflow: hidden;
+    max-width: 50.33%;
+    min-width: 40.33%;
+}

@@ -18,6 +18,8 @@ import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite
 import { Waveform } from "./Waveform"
 import { downloadMusic } from "../apis/MeidaApis"
 import { useTrack } from '../hook/TrackHook';
+import "../styles/PlayMusicBar.css";
+import "../styles/MusicBarWaveform.css";
 
 export default function PlayMusicBar() {
     const { setCurrentTrack, play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist } = useTrack();
@@ -212,6 +214,7 @@ export default function PlayMusicBar() {
                         url={currentMusicUrl}
                         volume={volume / 100}
                         onDurationChange={handleDurationChange}
+                        curComponent={'PlayMusicBar'}
                     //onPositionChange={handlePositionChange}
                     />
 
