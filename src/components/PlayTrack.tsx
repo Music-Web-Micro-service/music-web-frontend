@@ -34,11 +34,8 @@ export default function PlayTrack(props: PlayTrackProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const MusicUrl = props.musicUrl;
     const MusicResourceId = props.musicResourceId
-    //const [curTime, setCurTime] = useState(0);
-    //const [position, setPosition] = React.useState(32);
     const [duration, setDuration] = useState(0);
     const { setCurrentTrack, play, pause } = useTrack();
-    //const durationDisplayRef = useRef<HTMLSpanElement | null>(null);
     const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
     const handlePlayClick = useCallback(() => {
@@ -71,32 +68,12 @@ export default function PlayTrack(props: PlayTrackProps) {
         setDuration(newDuration);
     };
 
-    // const handlePositionChange = (newPosition: number) => {
-    //     setPosition(newPosition);
-    // };
-
     const TinyText = styled(Typography)({
         fontSize: '1.0rem',
         opacity: 0.38,
         fontWeight: 500,
         letterSpacing: 0.2,
     });
-
-    // useEffect(() => {
-    //     const handleLoadedMetadata = () => {
-    //         if (durationDisplayRef.current && audio.current) {
-    //             console.log("Duration in seconds:", audio.current.duration);
-    //             durationDisplayRef.current.textContent = formatDuration(audio.current.duration);
-    //         }
-    //     };
-
-
-    //     audio.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-    //     return () => {
-    //         audio.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
-    //     };
-    // }, []);
 
     useEffect(() => {
         const handleTimeUpdate = () => {
@@ -142,21 +119,15 @@ export default function PlayTrack(props: PlayTrackProps) {
                 <ThemeProvider theme={theme}>
                     <Toolbar sx={{ bgcolor: '#F1F1F1' }}>
 
-                        <div className="PlaysButtons">
-
-                            <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
-                                {isPlaying ? (
-                                    <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
-                                ) : (
-                                    <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
-                                )}
-                            </Button>
-
-                        </div>
-
                         <div className="MusicInfo">
                             <div className="SongImage">
-
+                                <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
+                                    {isPlaying ? (
+                                        <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                                    ) : (
+                                        <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                                    )}
+                                </Button>
                             </div>
 
                             <div className="TextInfo">
@@ -217,6 +188,6 @@ export default function PlayTrack(props: PlayTrackProps) {
                     </Toolbar>
                 </ThemeProvider>
             </div >
-        </div>
+        </div >
     );
 }

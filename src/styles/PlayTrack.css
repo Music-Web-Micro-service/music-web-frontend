@@ -1,5 +1,5 @@
 .playtrack-hover:hover {
-    background-color: rgb(255, 140, 0);
+    background-color: #FFF;
 }
 
 .PlayMusicBar {
@@ -69,11 +69,25 @@
 }
 
 .SongImage {
+    position: relative;
     width: 50px;
     height: 50px;
     border-radius: 10px;
     background: #D9D9D9;
     flex-shrink: 0;
+}
+
+.SongImage .PauseButton {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.SongImage:hover .PauseButton {
+    opacity: 1;
 }
 
 .SongName {
