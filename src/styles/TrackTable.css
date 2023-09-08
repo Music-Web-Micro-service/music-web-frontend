@@ -1,0 +1,19 @@
+.TrackTable {
+    background-color: #F1F1F1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.DurationSort {
+    margin-right: 30px;
+}
+
+.RightAlignButton {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.NameButton {
+    margin-right: 30px;
+    /* This will create a 30px gap to the right of the Name button. */
+}
