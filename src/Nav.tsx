@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  ButtonBase,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import {ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
-import { Link, useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import "./Nav.css";
 
 const Nav: React.FC = () => {
@@ -26,11 +19,7 @@ const Nav: React.FC = () => {
       <div className="nav-sidebar">
         <div className="nav-header">MelodyBay</div>
         <List>
-          <ButtonBase
-            component={Link}
-            to="/"
-            className={`button-base ${getActiveClass("/")}`}
-          >
+          <ButtonBase component={Link} to="/" className={`button-base ${getActiveClass("/")}`}>
             <ListItem>
               <ListItemIcon>
                 <HomeIcon />
