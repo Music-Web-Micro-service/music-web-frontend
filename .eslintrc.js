@@ -4,8 +4,8 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
+    // "prettier/@typescript-eslint",
+    "prettier",
     // "plugin:react/recommended",
     "plugin:prettier/recommended",
   ],
@@ -31,6 +31,6 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
-    "no-unused-vars": ["warn", {args: "after-used"}],
+    "no-unused-vars": "warn",
   },
 };
