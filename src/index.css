@@ -1,5 +1,5 @@
 @import "./styles/PlayMusicBar.css";
-@import "./styles/waveform.css";
+@import "./styles/TrackWaveform.css";
 
 body {
   margin: 0;
