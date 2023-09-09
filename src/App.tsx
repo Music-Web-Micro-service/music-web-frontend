@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Nav from "./Nav";
 import Home from "./pages/Home";
 import Favorite from "./pages/Favorite";
@@ -25,7 +25,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </Router>
- </ThemeProvider>
+    </ThemeProvider>
   );
 };
 
