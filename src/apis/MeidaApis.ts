@@ -1,14 +1,11 @@
 import axios from "axios";
+import {ImageData} from "../messages/Datas/ImageData";
 
-interface ImageData {
-  imageUrl: string;
-}
-
-interface MusicRelateResponse {
+type MusicRelateResponse = {
   musicFileId: number;
   musicUrl: string;
   imageUrl: string;
-}
+};
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8088/",

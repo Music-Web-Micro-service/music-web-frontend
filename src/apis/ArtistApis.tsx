@@ -1,20 +1,6 @@
 import axios from "axios";
-
-type BiographiesList = {
-  bioId: number;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type ArtistData = {
-  artistId: number;
-  userId: number;
-  artistName: string;
-  biographiesList: BiographiesList[];
-  createdAt: string;
-  updateAt: string;
-};
+import {BiographiesList} from "../messages/Datas/ArtistData";
+import {ArtistData} from "../messages/Datas/ArtistData";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8082/",

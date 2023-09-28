@@ -5,104 +5,21 @@ import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
-import axios from "axios";
 import {useEffect, useState} from "react";
 import {getAlbumById} from "../apis/AlbumApis";
 import {getArtistById} from "../apis/ArtistApis";
 import {getImageById} from "../apis/MeidaApis";
 import {fetchMusicRelateFiles} from "../apis/MeidaApis";
+import {BiographiesList} from "../messages/Datas/ArtistData";
+import {ArtistData} from "../messages/Datas/ArtistData";
+import {Genre} from "../messages/Datas/AlbumData";
+import {Track} from "../messages/Datas/AlbumData";
+import {AlbumData} from "../messages/Datas/AlbumData";
+import {TrackTableData} from "../messages/Datas/TrackTableData";
 
-const url = "/short-adventurous-intro-1-117090.mp3";
-
-type BiographiesList = {
-  bioId: number;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-type ArtistData = {
-  artistId: number;
-  userId: number;
-  artistName: string;
-  biographiesList: BiographiesList[];
-  createdAt: string;
-  updateAt: string;
-};
-
-interface Genre {
-  genre_id: number;
-  name: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Track {
-  trackId: number;
-  lyric: string | null;
-  genres: Genre[];
-  title: string;
-  artistId: number;
-  duration: number;
-  imageId: number | null;
-  videoId: number | null;
-  musicFileId: number | null;
-  trackStatus: string | null;
-  createdAt: string;
-  updatedAt: string;
-  band: boolean;
-}
-
-interface AlbumData {
-  albumId: number;
-  tracks: Track[];
-  title: string;
-  description: string;
-  artistId: number;
-  imageId: number | null;
-  releaseDate: string | null;
-  createdAt: string;
-  updatedAt: string;
-  band: boolean;
-}
-
-type TrackTableData = {
-  trackId: number;
-  title: string;
-  musicResourceId: number;
-  musicUrl: string;
+type ImageData = {
   imageUrl: string;
-  artistId: number;
-  artistName: string;
-  duration: number;
 };
-
-interface ImageData {
-  imageUrl: string;
-}
-
-const sampleTracks = [
-  {
-    trackId: 1,
-    title: "Song 1",
-    musicResourceId: 101,
-    musicUrl: url,
-    imageUrl: "url_to_image1.jpg",
-    artistId: 11,
-    artistName: "Artist 1",
-    duration: 210,
-  },
-  {
-    trackId: 2,
-    title: "Song 2",
-    musicResourceId: 102,
-    musicUrl: "url_to_song2.mp3",
-    imageUrl: "url_to_image2.jpg",
-    artistId: 12,
-    artistName: "Artist 2",
-    duration: 190,
-  },
-];
 
 type albumPageProps = {
   albumId: number;
