@@ -8,6 +8,7 @@ export type BiographiesList = {
 export type ArtistData = {
   artistId: number;
   userId: number;
+  imageId: number;
   artistName: string;
   biographiesList: BiographiesList[];
   createdAt: string;
