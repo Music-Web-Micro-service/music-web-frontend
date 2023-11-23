@@ -1,0 +1,18 @@
+.playlist-header {
+  display: flex;
+  /* align-items: flex-end; */
+  padding: 5px;
+  margin-bottom: 50px;
+}
+
+.playlist-info {
+  margin-left: 30px;
+}
+
+.song-list {
+  /* Styling for song list */
+}
+
+.recommended-songs {
+  padding: 16px;
+}
