@@ -16,6 +16,11 @@ import {Genre} from "../messages/Datas/AlbumData";
 import {Track} from "../messages/Datas/AlbumData";
 import {AlbumData} from "../messages/Datas/AlbumData";
 import {TrackTableData} from "../messages/Datas/TrackTableData";
+import React, { CSSProperties } from "react";
+
+type ArtistImageData = {
+  imageUrl: string;
+};
 
 type ImageData = {
   imageUrl: string;
@@ -25,12 +30,28 @@ type albumPageProps = {
   albumId: number;
 };
 
+const MAX_LENGTH = 40;
+
 export default function AlbumPage(props: albumPageProps) {
   const [albumData, setAlbumData] = useState<AlbumData | null>(null);
   const [artistData, setArtistData] = useState<ArtistData | null>(null);
   const [hasFetchedArtistData, setHasFetchedArtistData] = useState(false);
   const [imageData, setImageData] = useState<ImageData | null>(null);
+  const [artistImageData, setArtistImageData] = useState<ImageData  | null>(null);
   const [trackTableData, setTrackTableData] = useState<TrackTableData[]>([]);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const handleToggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const renderDescription = (description: string) => {
+    if (description.length <= MAX_LENGTH) {
+      return description;
+    }
+
+    return showFullDescription ? description : `${description.substring(0, MAX_LENGTH)}...`;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,6 +134,55 @@ export default function AlbumPage(props: albumPageProps) {
     fetchTrackData();
   }, [artistData]);
 
+  useEffect(() => {
+    const fetchArtistData = async () => {
+      if (albumData?.artistId && !hasFetchedArtistData) {
+        try {
+          const artistData = await getArtistById(albumData.artistId);
+          setArtistData(artistData);
+          setHasFetchedArtistData(true);
+  
+          // Fetch the artist's image if the artistData includes an imageId
+          if (artistData.imageId) {
+            const imageData = await getImageById(artistData.imageId);
+            setArtistImageData(imageData); // You need to define this state variable
+          }
+        } catch (error) {
+          console.error("There was an error fetching the artist data!", error);
+        }
+      }
+    };
+  
+    fetchArtistData();
+  }, [albumData, hasFetchedArtistData]);
+  
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
+    return `${year}-${month}`;
+  };
+
+  const getTotalDuration = () => {
+    const totalSeconds = albumData?.tracks.reduce((total, track) => total + track.duration, 0) || 0;
+    return formatDuration(totalSeconds);
+  };
+  
+  const formatDuration = (totalSeconds: number) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const getUniqueGenres = () => {
+    if (!albumData) return [];
+    const allGenres = albumData.tracks.flatMap(track => track.genres);
+    const uniqueGenres = Array.from(new Set(allGenres.map(genre => genre.name)));
+    return uniqueGenres;
+  };
+  
+
   if (!albumData) {
     return <div>Loading...</div>;
   }
@@ -129,16 +199,51 @@ export default function AlbumPage(props: albumPageProps) {
         </Box>
         <Box className="album-info">
           <div className="album-title">{albumData.title}</div>
-          <div className="album-description">{albumData.description}</div>
+          {/* <div className="album-description">{albumData.description}</div> */}
+          <Box className="album-description">
+            {renderDescription(albumData?.description || "")}
+            {albumData?.description && albumData.description.length > MAX_LENGTH && (
+              <Button onClick={handleToggleDescription}>
+                {showFullDescription ? "Show Less" : "Show All"}
+              </Button>
+            )}
+          </Box>
+
           <div className="album-information">
+            {/* {artistImageData && (
+              <img src={artistImageData.imageUrl} alt={artistData?.artistName} className="artist-image" />
+            )}
             <div className="album-artist-name">
               {artistData?.artistName || "Artist name loading..."}
-            </div>
+            </div> */}
+
+            <Box className="artist-info">
+              {artistImageData && (
+                <img src={artistImageData.imageUrl} alt={artistData?.artistName} className="artist-image" />
+              )}
+              <div className="album-artist-name">
+                {artistData?.artistName || "Artist name loading..."}
+              </div>
+            </Box>
+
             <div className="album-count">tracks: {albumData.tracks.length}</div>
-            <div className="album-createTime">createTime: {albumData.createdAt}</div>
-            <div className="album-count-duration">Durations</div>
+            <div className="album-createTime">
+              create time: {formatDate(albumData.createdAt)}
+            </div>
+            <div className="album-count-duration">
+              total duration: {getTotalDuration()}
+            </div>
           </div>
-          <div className="album-tag">Tag</div>
+
+          <Box className="album-tags">
+            Tags: 
+            {getUniqueGenres().map((genre, index) => (
+              <div key={index} className="album-tag">
+                {genre}
+              </div>
+            ))}
+          </Box>
+
         </Box>
       </Box>
       <Box className="album-action">

@@ -11,6 +11,19 @@
     min-height: 295px;
     width: 100%;
   }
+
+  .artist-info {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    gap: 10px; /* Optional: adds some space between the image and the text */
+  }
+  
+  .artist-image {
+    height: 40px; /* Example height - adjust as needed to match album-artist-name */
+    width: 40px; /* Same as height to maintain aspect ratio for a circle */
+    border-radius: 50%; /* Circular image */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+  }
   
   .album-image {
     width: 306px;
@@ -50,6 +63,7 @@
 }
 
 .album-description {
+    white-space: nowrap;
     color: #000;
     padding-top: 0px;
     font-family: Manjari;
@@ -58,7 +72,7 @@
     font-weight: 400;
     line-height: normal;
     max-width: 300px;
-    min-width: 110px;
+    min-width: 210px;
 }
 
 .album-information {
@@ -78,6 +92,17 @@
   gap: 25px;
 }
 
+.album-tags {
+  display: flex;
+  flex-wrap: wrap; /* Allows tags to wrap to the next line */
+  gap: 10px; /* Space between tags */
+}
+
 .album-tag {
-  margin-bottom: 0px;
+  display: inline-block;
+  background-color: #E0E0E0; /* Example background color */
+  border-radius: 20px; /* Rounded edges */
+  padding: 5px 15px; /* Top and bottom, left and right padding */
+  font-size: 0.8rem; /* Example font size */
+  color: #333; /* Example text color */
 }
