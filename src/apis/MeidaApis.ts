@@ -14,7 +14,7 @@ const apiClient = axios.create({
 
 export function downloadMusic(musicResourceId: number) {
   // First, fetch the download URL from your backend
-  fetch(`http://localhost:8088/MusicResource/get/download/file/${musicResourceId}`)
+  fetch(`http://localhost:8088/musicResource/get/download/file/${musicResourceId}`)
     .then((response) => response.text()) // <-- Change this line to handle the response as text
     .then((musicResourceUrl) => {
       if (!musicResourceUrl) {
@@ -55,7 +55,7 @@ export const fetchMusicRelateFiles = async (
     musicResourceIds.forEach((id) => params.append("musicResourceIds", id.toString()));
     imageIds.forEach((id) => params.append("imageIds", id.toString()));
 
-    const response = await apiClient.get("MusicResource/get/files", {params});
+    const response = await apiClient.get("musicResource/get/files", {params});
     return response.data;
   } catch (error) {
     console.error("Error fetching data", error);
