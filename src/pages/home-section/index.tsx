@@ -23,7 +23,7 @@ let blockStyle: React.CSSProperties = {
   backgroundColor: "rgb(0,0,0,.1)",
   borderRadius: 3,
   flexShrink: 0,
-  marginLeft: 2,
+  marginRight: 2,
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -75,13 +75,12 @@ export const HomeSection: React.FC = () => {
         <Box
           sx={{
             width: 1,
-            height: 500,
+            height: 200,
             backgroundColor: "rgb(0,0,0,.1)",
-            marginLeft: 2,
             borderRadius: "10px 10px 0px 0px",
           }}
         >
-          12321
+          
           <Box
             sx={{
               display: "flex",
@@ -89,7 +88,9 @@ export const HomeSection: React.FC = () => {
               width: "100%",
               height: "100%",
             }}
-          ></Box>
+          >
+            123
+          </Box>
         </Box>
       </Box>
     </Box>
