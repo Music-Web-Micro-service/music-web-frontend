@@ -22,9 +22,9 @@ import "../styles/PlayMusicBar.css";
 import "../styles/MusicBarWaveform.css";
 
 export default function PlayMusicBar() {
-  const {setCurrentTrack, play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist} =
+  const {play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist} =
     useTrack();
-  const audio = useRef(new Audio(currentMusicUrl));
+  const audio = useRef(new Audio());
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(30);
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
@@ -32,7 +32,7 @@ export default function PlayMusicBar() {
   const handleSeek = (time: number) => {
     if (audio) {
       audio.current.currentTime = time;
-      console.log("Jumping to:", time, "seconds");
+      //console.log("Jumping to:", time, "seconds");
     }
   };
 
@@ -52,22 +52,13 @@ export default function PlayMusicBar() {
   };
 
   const handlePlayClick = () => {
-    setCurrentTrack(currentTrackId, currentMusicUrl, title, artist);
     play();
   };
 
   const handlePauseClick = () => {
     pause();
   };
-
-  useEffect(() => {
-    if (isPlaying) {
-      audio.current.play();
-    } else {
-      audio.current.pause();
-    }
-  }, [isPlaying]);
-
+  
   useEffect(() => {
     const handleTimeUpdate = () => {
       console.log("Time updated:", audio.current.currentTime);
@@ -83,6 +74,11 @@ export default function PlayMusicBar() {
   }, []);
 
   useEffect(() => {
+    if (!currentMusicUrl) {
+      return;
+    }
+    
+    console.log("play music bar now url: " + currentMusicUrl);
     // Create or re-create the audio object
     const newAudio = new Audio(currentMusicUrl);
     audio.current = newAudio;
@@ -93,10 +89,9 @@ export default function PlayMusicBar() {
         positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
       }
     };
-
+    
     // Attach the event listener to the new audio object
     newAudio.addEventListener("timeupdate", handleTimeUpdate);
-
     return () => {
       newAudio.removeEventListener("timeupdate", handleTimeUpdate);
       newAudio.pause();

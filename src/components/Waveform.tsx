@@ -12,29 +12,38 @@ type WaveformProps = {
 };
 
 const useWavesurfer = (containerRef: any, url: string) => {
-  const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
+  const wavesurfer = useRef<WaveSurfer | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !url) return;
+    console.log("useWavesurfer " + url);
+    // Create WaveSurfer instance if it doesn't exist
+    if (!wavesurfer.current) {
+      console.log("wavesurfer init ");
+      wavesurfer.current = WaveSurfer.create({
+        container: containerRef.current,
+        waveColor: "#D9D9D9",
+        progressColor: "#383351",
+        normalize: false,
+        height: 40,
+      });
+    }
 
-    const ws = WaveSurfer.create({
-      container: containerRef.current,
-      waveColor: "#D9D9D9",
-      progressColor: "#383351",
-      normalize: false,
-      height: 40,
-      url: url,
-    });
+    // Load the new URL
+    wavesurfer.current.load(url);
 
-    setWavesurfer(ws);
-    ws.load(url);
     return () => {
-      ws.destroy();
+      // Only destroy when unmounting the component
+      if (wavesurfer.current) {
+        console.log("wavesurfer destroy " + url);
+        // wavesurfer.current.destroy();
+      }
     };
-  }, [containerRef]);
+  }, [containerRef, url]); // Re-run effect when URL changes
 
-  return wavesurfer;
+  return wavesurfer.current;
 };
+
 
 const WaveformComponent: React.FC<WaveformProps> = ({
   onSeek,
@@ -48,6 +57,17 @@ const WaveformComponent: React.FC<WaveformProps> = ({
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useWavesurfer(waveformRef, url);
 
+  useEffect(() => {
+    if (!wavesurfer) return;
+    console.log("Play?" + playing);
+    if (playing) {
+      wavesurfer.play();
+    } else {
+      wavesurfer.pause();
+    }
+  }, [wavesurfer, playing]);
+  
+
   // Event listeners
   useEffect(() => {
     if (!wavesurfer) return;
@@ -55,10 +75,6 @@ const WaveformComponent: React.FC<WaveformProps> = ({
     wavesurfer.on("ready", () => {
       onDurationChange(wavesurfer.getDuration());
     });
-
-    // wavesurfer.on('audioprocess', () => {
-    //     onPositionChange(wavesurfer.getCurrentTime());
-    // });
 
     const handleClick = (event: MouseEvent) => {
       const bbox = (event.target as HTMLElement).getBoundingClientRect();
@@ -81,7 +97,9 @@ const WaveformComponent: React.FC<WaveformProps> = ({
 
   useEffect(() => {
     if (wavesurfer) {
-      wavesurfer.destroy();
+      console.log("useWavesurfer destroy");
+      // wavesurfer.destroy();
+      wavesurfer?.load(url);
     }
   }, [url]);
 
@@ -102,7 +120,7 @@ const WaveformComponent: React.FC<WaveformProps> = ({
       wavesurfer.pause();
     }
   }, [wavesurfer, playing, volume]);
-
+  
   return <div className="waveform" ref={waveformRef}></div>;
 };
 
