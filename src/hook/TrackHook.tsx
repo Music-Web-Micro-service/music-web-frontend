@@ -6,6 +6,7 @@ type TrackContextType = {
   currentTrackId: number;
   currentMusicUrl: string;
   currentMusicResourceId: number;
+  currentImageUrl: string;
   setCurrentTrack: (trackid: number, musicResourceId: number, musicUrl: string, title: string, artist: string, currentImageUrl: string) => void;
   play: () => void;
   pause: () => void;
