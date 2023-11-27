@@ -22,7 +22,7 @@ import "../styles/PlayMusicBar.css";
 import "../styles/MusicBarWaveform.css";
 
 export default function PlayMusicBar() {
-  const {play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist} =
+  const {play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist, currentImageUrl} =
     useTrack();
   const audio = useRef(new Audio());
   const [duration, setDuration] = useState(0);
@@ -144,7 +144,9 @@ export default function PlayMusicBar() {
           </div>
 
           <div className="MusicInfo">
-            <div className="SongImage"></div>
+            <div className="SongImage">
+              <img src = {currentImageUrl} alt={title} style={{ borderRadius: "10px", width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
 
             <div className="TextInfo">
               <div className="SongName">{title}</div>
