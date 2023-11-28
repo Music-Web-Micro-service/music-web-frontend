@@ -3,7 +3,9 @@ import React, {useState} from "react";
 import PlayTrack from "./PlayTrack";
 import "../styles/TrackTable.css";
 
-export type Track = {
+
+type Track = {
+
   trackId: number;
   title: string;
   musicResourceId: number;
@@ -15,14 +17,16 @@ export type Track = {
 };
 
 type TrackTableProps = {
-  tracks: Track[];
+
+  tracks: Track[] | null;
 };
 
-function TrackTable({tracks}: TrackTableProps) {
+function TrackTable({tracks = []}: TrackTableProps) {
   const [sortField, setSortField] = useState<"name" | "time">("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const sortedTracks = tracks.sort((a, b) => {
+  const sortedTracks = (tracks || []).sort((a, b) => {
+
     if (sortField === "name") {
       return sortDirection === "asc"
         ? a.title.localeCompare(b.title)

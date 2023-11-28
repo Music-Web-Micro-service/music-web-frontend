@@ -25,10 +25,9 @@ export default function PlayMusicBar() {
   const {setCurrentTrack, play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist} =
     useTrack();
   const audio = useRef(new Audio(currentMusicUrl));
-  // const [play, setPlay] = useState(false);
-  //const [curTime, setCurTime] = useState(0);
+
   const [duration, setDuration] = useState(0);
-  //const [position, setPosition] = React.useState(32);
+
   const [volume, setVolume] = useState(30);
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
@@ -39,9 +38,6 @@ export default function PlayMusicBar() {
     }
   };
 
-  // const handleTimeUpdate = () => {
-  //     setCurTime(audio.current.currentTime);
-  // };
 
   function formatDuration(seconds: number) {
     const minutes = Math.floor(seconds / 60);
@@ -53,9 +49,6 @@ export default function PlayMusicBar() {
     setDuration(newDuration);
   };
 
-  // const handlePositionChange = (newPosition: number) => {
-  //     setPosition(newPosition);
-  // };
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const newVolume = Array.isArray(newValue) ? newValue[0] : newValue;
@@ -85,49 +78,20 @@ export default function PlayMusicBar() {
       if (positionDisplayRef.current && audio.current) {
         positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
       }
+
     };
     audio.current.addEventListener("timeupdate", handleTimeUpdate);
+
 
     return () => {
       audio.current.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
 
-  // useEffect(() => {
-  //     const handleTimeUpdate = () => {
-  //         setCurTime(audio.current.currentTime);
-  //     };
-  //     audio.current.addEventListener('timeupdate', handleTimeUpdate);
-
-  //     return () => {
-  //         audio.current.removeEventListener('timeupdate', handleTimeUpdate);
-  //     };
-  // }, []);
-
-  // useEffect(() => {
-  //     const updateCurTime = () => setCurTime(audio.current.currentTime);
-  //     audio.current.addEventListener("timeupdate", updateCurTime);
-
-  //     return () => {
-  //         audio.current.removeEventListener("timeupdate", updateCurTime);
-  //     };
-  // }, [audio]);
-
-  // useEffect(() => {
-  //     audio.current.onerror = () => {
-  //         console.error(`Failed to play ${currentMusicUrl}`);
-  //         // set an error state and display it to the user
-  //     };
-  // }, [audio, currentMusicUrl]);
-
   useEffect(() => {
     // Create or re-create the audio object
     const newAudio = new Audio(currentMusicUrl);
     audio.current = newAudio;
-
-    // const handleTimeUpdate = () => {
-    //     setCurTime(newAudio.currentTime);
-    // };
 
     const handleTimeUpdate = () => {
       console.log("Time updated:", audio.current.currentTime);
@@ -144,6 +108,7 @@ export default function PlayMusicBar() {
       newAudio.pause();
       newAudio.currentTime = 0;
     };
+
   }, [currentMusicUrl]);
 
   const TinyText = styled(Typography)({

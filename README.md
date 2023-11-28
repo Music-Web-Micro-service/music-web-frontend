@@ -10,7 +10,7 @@
           1.   Material ui
           2.   https://mui.com/
      2.   Ant design
-          1.   https://ant.design/docs/react/introduce uninstall yet 这个需要的时候再装
+          1.   https://ant.design/docs/react/introduce uninstall
 4.   fonts
      1.   
 5.   package manage 
