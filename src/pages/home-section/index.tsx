@@ -1,8 +1,6 @@
 import {Box, Typography} from "@mui/material";
 import React from "react";
-import {Waveform} from "../../components/Waveform";
-import TrackTable, {Track} from "../../components/TrackTable";
-import {TrackProvider} from "../../hook/TrackContext";
+import { Track } from "../../components/TrackTable";
 
 let mokedata = () => {
   let list = [];
