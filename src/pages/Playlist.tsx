@@ -1,11 +1,13 @@
-import React, {useState, useEffect} from "react";
-import {useLocation} from "react-router-dom";
-import {Typography, Avatar, Box} from "@mui/material";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-import TrackTable from "../components/TrackTable";
+import { Avatar, Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import TrackTable, { Track } from "../components/TrackTable";
 
 import "../styles/Playlist.css";
 
+
+// @Depracted
 type Song = {
   id: number;
   title: string;
@@ -18,7 +20,7 @@ type PlaylistDetails = {
   name: string;
   description: string;
   avatar: string;
-  songs: Song[];
+  tracks: Track[];
   creator: string;
   totalDuration: number;
 };
@@ -29,7 +31,7 @@ const defaultPlaylistDetails: PlaylistDetails = {
   name: "Playlist Name",
   description: "Playlist Description",
   avatar: "",
-  songs: [],
+  tracks: [],
   creator: "Creator Name",
   totalDuration: 0,
 };
@@ -96,14 +98,14 @@ const Playlist: React.FC = () => {
             Created by {playlistDetails.creator}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            {pluralize(playlistDetails.songs.length, "track")} •{" "}
+            {pluralize(playlistDetails.tracks.length, "track")} •{" "}
             {formatDuration(playlistDetails.totalDuration)}
           </Typography>
         </Box>
       </Box>
 
       <Box className="playlist-details">
-        <TrackTable tracks={playlistDetails.songs} />
+        <TrackTable tracks={playlistDetails.tracks} />
       </Box>
     </Box>
   );

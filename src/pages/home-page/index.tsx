@@ -3,10 +3,7 @@ import React from "react";
 import HomeTabs from "./tabs";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Nav from "../../Nav";
-import { HomeSection } from "../home-section";
-import DownloadHistory from "../DownloadHistory";
-import Favorite from "../Favorite";
-import NewPlaylist from "../NewPlaylist";
+
 
 export default function HomePage() {
   return (
