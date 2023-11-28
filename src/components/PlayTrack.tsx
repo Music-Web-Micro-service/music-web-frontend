@@ -1,22 +1,20 @@
-import React, {useEffect, useRef, useState, useCallback} from "react";
-import GetAppIcon from "@mui/icons-material/GetApp";
-import {Slider, Stack, Toolbar} from "@mui/material";
-import Button from "@mui/material/Button";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import {styled} from "@mui/material/styles";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import GetAppIcon from "@mui/icons-material/GetApp";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
-import {Waveform} from "./Waveform";
-import {downloadMusic} from "../apis/MeidaApis";
-import {useTrack} from "../hook/TrackHook";
-import PlayMusicBar from "./PlayMusicBar";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import { Toolbar } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { downloadMusic } from "../apis/MeidaApis";
+import { useTrack } from "../hook/TrackHook";
 import "../styles/PlayTrack.css";
 import "../styles/TrackWaveform.css";
+import { Waveform } from "./Waveform";
 
 type PlayTrackProps = {
   trackId: number;

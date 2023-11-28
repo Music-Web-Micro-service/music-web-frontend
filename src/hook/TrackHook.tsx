@@ -1,5 +1,5 @@
-import React, {createContext, useContext, useState} from "react";
-import {TrackContext} from "./TrackContext";
+import { useContext } from "react";
+import { TrackContext } from "./TrackContext";
 
 type TrackContextType = {
   currentTrackId: number;

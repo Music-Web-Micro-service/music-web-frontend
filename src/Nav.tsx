@@ -1,13 +1,13 @@
-import React, {useState} from "react";
-import {ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DownloadIcon from "@mui/icons-material/GetApp";
+import HomeIcon from "@mui/icons-material/Home";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Nav.css";
 
-import NewPlaylistDialog from "./pages/NewPlaylistDialog";
+import NewPlaylistDialog from "./pages/home-page/NewPlaylistDialog";
 
 type Playlist = {
   id: number;

@@ -1,14 +1,14 @@
-import React, {useState} from "react";
 import {
+  Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
   FormControlLabel,
-  Checkbox,
-  Button,
+  TextField,
 } from "@mui/material";
+import React, { useState } from "react";
 
 interface NewPlaylistDialogProps {
   open: boolean;

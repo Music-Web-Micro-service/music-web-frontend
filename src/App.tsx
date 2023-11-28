@@ -3,18 +3,18 @@ import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ThemeProvider } from "@emotion/react";
-import DownloadHistory from "./pages/DownloadHistory";
-import Favorite from "./pages/Favorite";
+import DownloadHistory from "./pages/home-page/DownloadHistory";
+import Favorite from "./pages/home-page/Favorite";
 import theme from "./themes/theme";
 
 import HomePage from "./pages/home-page";
-import { HomeSection } from "./pages/home-section";
+import { HomeSection } from "./pages/home-page/home-section";
 import SignUpPage from "./pages/signup-page";
 
 import "./App.css";
 import PlayMusicBar from "./components/PlayMusicBar";
 import { useTrack } from "./hook/TrackHook";
-import Playlist from "./pages/Playlist";
+import Playlist from "./pages/home-page/Playlist-section/Playlist";
 
 
 

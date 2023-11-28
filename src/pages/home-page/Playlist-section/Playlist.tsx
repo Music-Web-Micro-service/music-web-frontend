@@ -2,9 +2,9 @@ import HeadphonesIcon from "@mui/icons-material/Headphones";
 import { Avatar, Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import TrackTable, { Track } from "../components/TrackTable";
+import TrackTable, { Track } from "../../../components/TrackTable";
 
-import "../styles/Playlist.css";
+import "./Playlist.css";
 
 
 // @Depracted
