@@ -14,7 +14,9 @@ const apiClient = axios.create({
 
 export function downloadMusic(musicResourceId: number) {
   // First, fetch the download URL from your backend
-  fetch(`http://localhost:8088/musicResource/get/download/file/${musicResourceId}`)
+
+  fetch(`http://localhost:8088/MusicResource/get/download/file/${musicResourceId}`)
+
     .then((response) => response.text()) // <-- Change this line to handle the response as text
     .then((musicResourceUrl) => {
       if (!musicResourceUrl) {
