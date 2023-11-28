@@ -18,6 +18,7 @@ import {
 import SearchBar from "./search-bar";
 import {Email, EmailOutlined, Google, Lock, Visibility, VisibilityOff} from "@mui/icons-material";
 import VerificationCodeInput from "../VerificationCodeInput";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const loginModalStyle: React.CSSProperties = {
   top: "20%",
@@ -46,6 +47,7 @@ export default function HomeTabs() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const navigate = useNavigate();
   const handleCodeSent = () => {
     setIsCodeSent(!isCodeSent);
   };
@@ -69,6 +71,10 @@ export default function HomeTabs() {
   const handleLogin = () => {
     console.log("login");
   };
+
+  const handleSignup = () => {
+    navigate("/signup");
+  };
   return (
     <Box sx={{width: "100%", height: "50px"}}>
       <Box
@@ -84,9 +90,8 @@ export default function HomeTabs() {
       >
         <SearchBar />
         <Box>
-          <Button variant="contained" sx={{marginRight: "10px"}}>
-            Sign up
-          </Button>
+          <Button onClick={handleSignup} variant="contained" sx={{marginRight: "20px"}}>Sign Up</Button>
+
           <Button onClick={handleModalOpen} variant="outlined" sx={{marginRight: "20px"}}>
             Log in
           </Button>
