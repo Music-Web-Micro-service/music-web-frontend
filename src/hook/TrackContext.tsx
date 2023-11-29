@@ -22,7 +22,7 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({children}) => {
   const [currentTrackId, setCurrentTrackId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(30);
-  const [currentMusicUrl, setcurrentMusicUrl] = useState("/short-adventurous-intro-1-117090.mp3");
+  const [currentMusicUrl, setcurrentMusicUrl] = useState("");
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
 
