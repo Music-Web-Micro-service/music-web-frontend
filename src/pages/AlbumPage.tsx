@@ -41,18 +41,7 @@ export default function AlbumPage(props: albumPageProps) {
   const [trackTableData, setTrackTableData] = useState<TrackTableData[]>([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  const handleToggleDescription = () => {
-    setShowFullDescription(!showFullDescription);
-  };
-
-  const renderDescription = (description: string) => {
-    if (description.length <= MAX_LENGTH) {
-      return description;
-    }
-
-    return showFullDescription ? description : `${description.substring(0, MAX_LENGTH)}...`;
-  };
-
+  // set album data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +55,7 @@ export default function AlbumPage(props: albumPageProps) {
     fetchData();
   }, [props.albumId]);
 
+  // get album image data
   useEffect(() => {
     const fetchImage = async () => {
       try {
@@ -81,22 +71,30 @@ export default function AlbumPage(props: albumPageProps) {
     fetchImage();
   }, [albumData]);
 
+  // get artist data
   useEffect(() => {
     const fetchArtistData = async () => {
-      if (albumData?.artistId && !hasFetchedArtistData) {
+      if (albumData?.artistId) {
         try {
-          const data = await getArtistById(albumData.artistId);
-          setArtistData(data);
+          const artistData = await getArtistById(albumData.artistId);
+          setArtistData(artistData);
           setHasFetchedArtistData(true);
+  
+          // Fetch the artist's image if the artistData includes an imageId
+          if (artistData.imageId) {
+            const imageData = await getImageById(artistData.imageId);
+            setArtistImageData(imageData); // You need to define this state variable
+          }
         } catch (error) {
           console.error("There was an error fetching the artist data!", error);
         }
       }
     };
-
+  
     fetchArtistData();
   }, [albumData]);
 
+  // get tracks data
   useEffect(() => {
     const fetchTrackData = async () => {
       try {
@@ -133,29 +131,18 @@ export default function AlbumPage(props: albumPageProps) {
 
     fetchTrackData();
   }, [artistData]);
+  
+  const handleToggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
 
-  useEffect(() => {
-    const fetchArtistData = async () => {
-      if (albumData?.artistId && !hasFetchedArtistData) {
-        try {
-          const artistData = await getArtistById(albumData.artistId);
-          setArtistData(artistData);
-          setHasFetchedArtistData(true);
-  
-          // Fetch the artist's image if the artistData includes an imageId
-          if (artistData.imageId) {
-            const imageData = await getImageById(artistData.imageId);
-            setArtistImageData(imageData); // You need to define this state variable
-          }
-        } catch (error) {
-          console.error("There was an error fetching the artist data!", error);
-        }
-      }
-    };
-  
-    fetchArtistData();
-  }, [albumData, hasFetchedArtistData]);
-  
+  const renderDescription = (description: string) => {
+    if (description.length <= MAX_LENGTH) {
+      return description;
+    }
+
+    return showFullDescription ? description : `${description.substring(0, MAX_LENGTH)}...`;
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
