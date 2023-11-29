@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { ThemeProvider } from "@emotion/react";
-import DownloadHistory from "./pages/home-page/DownloadHistory";
-import Favorite from "./pages/home-page/Favorite";
+import DownloadHistory from "./pages/home-page/download-history-section/DownloadHistory";
+import Favorite from "./pages/home-page/favorite-section/Favorite";
 import theme from "./themes/theme";
 
 import HomePage from "./pages/home-page";
@@ -12,9 +12,7 @@ import { HomeSection } from "./pages/home-page/home-section";
 import SignUpPage from "./pages/signup-page";
 
 import "./App.css";
-import PlayMusicBar from "./components/PlayMusicBar";
-import { useTrack } from "./hook/TrackHook";
-import Playlist from "./pages/home-page/Playlist-section/Playlist";
+import Playlist from "./pages/home-page/playlist-section/Playlist";
 
 
 
@@ -62,10 +60,6 @@ const App: React.FC = () => {
   );
 };
 
-const MusicBarComponent = () => {
-  const {isPlaying} = useTrack();
-  const [hasPlayed] = useState(true);
-  return <>{isPlaying ? <PlayMusicBar /> : hasPlayed && <PlayMusicBar />}</>;
-};
+
 
 export default App;

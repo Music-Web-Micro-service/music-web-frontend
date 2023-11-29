@@ -75,7 +75,7 @@ const Playlist: React.FC = () => {
   }, [playlistNameSlug]);
 
   return (
-    <Box className="playlist-page" sx={{width: "100%", bgcolor: "background.paper"}}>
+    <Box className="playlist-Section" sx={{width: "100%", bgcolor: "background.paper"}}>
       <Box className="playlist-header">
         <Avatar
           variant="square"

@@ -1,11 +1,15 @@
 import { Box } from "@mui/material";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Nav from "../../Nav";
+import PlayMusicBar from "../../components/PlayMusicBar";
+import { TrackProvider } from "../../hook/TrackContext";
+import { useTrack } from "../../hook/TrackHook";
 import HomeTabs from "./tabs";
 
 
 export default function HomePage() {
-  return (
+  return (<TrackProvider>
     <Box className="app-container" display={"flex"} flexDirection={"row"} width={1}>
       <Nav />
       <Box display={"flex"} flexDirection={"column"} sx={{width: window.innerWidth - 250}}>
@@ -16,5 +20,13 @@ export default function HomePage() {
         </Box>
       </Box>
     </Box>
+    <MusicBarComponent />
+  </TrackProvider>
   );
 }
+
+const MusicBarComponent = () => {
+  const {isPlaying} = useTrack();
+  const [hasPlayed] = useState(true);
+  return <>{isPlaying ? <PlayMusicBar /> : hasPlayed && <PlayMusicBar />}</>;
+};

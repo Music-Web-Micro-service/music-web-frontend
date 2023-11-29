@@ -21,13 +21,13 @@ type ImageData = {
   imageUrl: string;
 };
 
-type albumPageProps = {
+type albumSectionProps = {
   albumId: number;
 };
 
 const MAX_LENGTH = 40;
 
-export default function AlbumPage(props: albumPageProps) {
+export default function AlbumSection(props: albumSectionProps) {
   const [albumData, setAlbumData] = useState<AlbumData | null>(null);
   const [artistData, setArtistData] = useState<ArtistData | null>(null);
   const [hasFetchedArtistData, setHasFetchedArtistData] = useState(false);
