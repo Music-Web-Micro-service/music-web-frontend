@@ -29,7 +29,6 @@ type PlayTrackProps = {
 };
 
 export default function PlayTrack(props: PlayTrackProps) {
-  // const audio = useRef(new Audio(props.musicUrl));
   const audio = useRef(new Audio());
   const MusicResourceId = props.musicResourceId;
   const [duration, setDuration] = useState(0);
@@ -44,11 +43,6 @@ export default function PlayTrack(props: PlayTrackProps) {
     setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
     play();
   }, [play]);
-
-  // const handlePlayClick = () => { 
-  //   setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
-  //   play();
-  // };
 
   const handleSeek = useCallback((time: number) => {
     if (audio.current) {
