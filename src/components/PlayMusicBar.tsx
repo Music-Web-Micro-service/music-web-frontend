@@ -32,7 +32,6 @@ export default function PlayMusicBar() {
   const handleSeek = (time: number) => {
     if (audio) {
       audio.current.currentTime = time;
-      //console.log("Jumping to:", time, "seconds");
     }
   };
 
@@ -58,20 +57,6 @@ export default function PlayMusicBar() {
   const handlePauseClick = () => {
     pause();
   };
-  
-  useEffect(() => {
-    const handleTimeUpdate = () => {
-      console.log("Time updated:", audio.current.currentTime);
-      if (positionDisplayRef.current && audio.current) {
-        positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
-      }
-    };
-    audio.current.addEventListener("timeupdate", handleTimeUpdate);
-
-    return () => {
-      audio.current.removeEventListener("timeupdate", handleTimeUpdate);
-    };
-  }, []);
 
   useEffect(() => {
     if (!currentMusicUrl) {
@@ -98,6 +83,20 @@ export default function PlayMusicBar() {
       newAudio.currentTime = 0;
     };
   }, [currentMusicUrl]);
+
+  useEffect(() => {
+    const handleTimeUpdate = () => {
+      console.log("Time updated:", audio.current.currentTime);
+      if (positionDisplayRef.current && audio.current) {
+        positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
+      }
+    };
+    audio.current.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      audio.current.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, []);
 
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",
