@@ -31,8 +31,6 @@ type PlayTrackProps = {
 export default function PlayTrack(props: PlayTrackProps) {
   // const audio = useRef(new Audio(props.musicUrl));
   const audio = useRef(new Audio());
-  const [isPlayingT, setIsPlayingT] = useState(false);
-  const MusicUrl = props.musicUrl;
   const MusicResourceId = props.musicResourceId;
   const [duration, setDuration] = useState(0);
   const { setCurrentTrack, play, pause, currentTrackId, isPlaying } = useTrack();
@@ -47,10 +45,14 @@ export default function PlayTrack(props: PlayTrackProps) {
     play();
   }, [play]);
 
+  // const handlePlayClick = () => { 
+  //   setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
+  //   play();
+  // };
+
   const handleSeek = useCallback((time: number) => {
     if (audio.current) {
       audio.current.currentTime = time;
-      console.log("Jumping to:", time, "seconds");
     }
   }, [audio]);
 
@@ -71,6 +73,12 @@ export default function PlayTrack(props: PlayTrackProps) {
     letterSpacing: 0.2,
   });
 
+  // set audio source
+  useEffect(() => {
+    audio.current.src = props.musicUrl;
+  }, [props.musicUrl]);
+
+  // duration update
   useEffect(() => {
     const handleTimeUpdate = () => {
       if (positionDisplayRef.current && audio.current) {
@@ -84,10 +92,6 @@ export default function PlayTrack(props: PlayTrackProps) {
       audio.current.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
-
-  useEffect(() => {
-    audio.current.src = props.musicUrl;
-  }, [props.musicUrl]);
 
   const theme = createTheme({
     components: {
