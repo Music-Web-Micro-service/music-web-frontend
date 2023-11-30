@@ -1,10 +1,10 @@
-import {Button, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import React, {useState} from "react";
-import PlayTrack from "./PlayTrack";
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { useState } from "react";
 import "../styles/TrackTable.css";
+import PlayTrack from "./PlayTrack";
 
 
-type Track = {
+export type Track = {
 
   trackId: number;
   title: string;

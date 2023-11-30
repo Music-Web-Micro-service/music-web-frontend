@@ -1,6 +1,6 @@
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
-import { Track } from "../../components/TrackTable";
+import { Track } from "../../../components/TrackTable";
 
 let mokedata = () => {
   let list = [];

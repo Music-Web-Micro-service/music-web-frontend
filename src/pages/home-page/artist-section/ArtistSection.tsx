@@ -1,10 +1,9 @@
-import {Box, IconButton} from "@mui/material";
-import TrackTable from "../components/TrackTable";
-import "../styles/ArtistPage.css";
-import Button from "@mui/material/Button";
+import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
+import { Box, IconButton } from "@mui/material";
+import TrackTable from "../../../components/TrackTable";
+import "./ArtistSection.css";
 
 const url = "/short-adventurous-intro-1-117090.mp3";
 
@@ -31,7 +30,7 @@ const sampleTracks = [
   },
 ];
 
-export default function ArtistPage() {
+export default function ArtistSection() {
   return (
     <Box className="artist-content">
       <Box className="artist-top-section">
