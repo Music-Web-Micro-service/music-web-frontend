@@ -12,29 +12,47 @@ type WaveformProps = {
 };
 
 const useWavesurfer = (containerRef: any, url: string) => {
-  const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
+  const wavesurfer = useRef<WaveSurfer | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
+    console.log("useWavesurfer " + url);
+    // Create WaveSurfer instance if it doesn't exist
+    if (!wavesurfer.current) {
+      console.log("wavesurfer init ");
+      wavesurfer.current = WaveSurfer.create({
+        container: containerRef.current,
+        waveColor: "#D9D9D9",
+        progressColor: "#383351",
+        normalize: false,
+        height: 40,
+      });
+    }
 
-    const ws = WaveSurfer.create({
-      container: containerRef.current,
-      waveColor: "#D9D9D9",
-      progressColor: "#383351",
-      normalize: false,
-      height: 40,
-      url: url,
-    });
-
-    setWavesurfer(ws);
-    ws.load(url);
-    return () => {
-      ws.destroy();
+    const loadTrack = async (urlToLoad: string) => {
+      if (urlToLoad !== "" && wavesurfer.current) {
+        try {
+          await wavesurfer.current.load(urlToLoad);
+        } catch (error) {
+          console.error("Error loading track:", error);
+        }
+      }
     };
-  }, [containerRef]);
 
-  return wavesurfer;
+    loadTrack(url);
+
+    return () => {
+      // Only destroy when unmounting the component
+      if (wavesurfer.current) {
+        console.log("wavesurfer destroy " + url);
+        // wavesurfer.current.destroy();
+      }
+    };
+  }, [containerRef, url]); // Re-run effect when URL changes
+
+  return wavesurfer.current;
 };
+
 
 const WaveformComponent: React.FC<WaveformProps> = ({
   onSeek,
@@ -48,61 +66,59 @@ const WaveformComponent: React.FC<WaveformProps> = ({
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useWavesurfer(waveformRef, url);
 
-  // Event listeners
+  // Handle WaveSurfer readiness and initiate playback if needed
   useEffect(() => {
     if (!wavesurfer) return;
-
-    wavesurfer.on("ready", () => {
+  
+    const handleReady = () => {
       onDurationChange(wavesurfer.getDuration());
-    });
-
-    // wavesurfer.on('audioprocess', () => {
-    //     onPositionChange(wavesurfer.getCurrentTime());
-    // });
-
-    const handleClick = (event: MouseEvent) => {
-      const bbox = (event.target as HTMLElement).getBoundingClientRect();
-      const progress = (event.clientX - bbox.left) / bbox.width;
-      const clickedPositionInSeconds = progress * wavesurfer.getDuration();
-
-      if (Number.isFinite(clickedPositionInSeconds)) {
-        onSeek(clickedPositionInSeconds);
-      } else {
-        console.error("Invalid clickedPositionInSeconds:", clickedPositionInSeconds);
+      if (playing) {
+        console.log("Auto-starting playback");
+        wavesurfer.play();
       }
     };
-
-    waveformRef.current?.addEventListener("click", handleClick);
+  
+    wavesurfer.on("ready", handleReady);
 
     return () => {
-      waveformRef.current?.removeEventListener("click", handleClick);
+      wavesurfer.un("ready", handleReady);
     };
-  }, [wavesurfer]);
-
-  useEffect(() => {
-    if (wavesurfer) {
-      wavesurfer.destroy();
-    }
-  }, [url]);
-
-  // Playback and Volume
+  }, [wavesurfer, playing, onDurationChange]);
+  
+  // Load the waveform
   useEffect(() => {
     if (!wavesurfer) return;
+    
+    console.log("Loading new URL into WaveSurfer:", url);
+    wavesurfer.load(url);
+  }, [wavesurfer, url]);
 
+  // Handle play/pause and volume changes
+  useEffect(() => {
+    if (!wavesurfer || !url || url == "") {
+      console.log("WaveSurfer not ready for playback control");
+      return;
+    }
+
+    // Handle volume
     if (volume === 0) {
       wavesurfer.setMuted(true);
     } else {
-      wavesurfer.setMuted(false);
       wavesurfer.setVolume(volume);
+      wavesurfer.setMuted(false);
     }
 
+    // Handle play/pause
     if (playing) {
-      wavesurfer.play();
+      console.log("Playing WaveSurfer");
+      wavesurfer.play().catch((e) => { console.log(e);});
     } else {
+      console.log("Pausing WaveSurfer");
       wavesurfer.pause();
     }
   }, [wavesurfer, playing, volume]);
 
+  
   return <div className="waveform" ref={waveformRef}></div>;
 };
 

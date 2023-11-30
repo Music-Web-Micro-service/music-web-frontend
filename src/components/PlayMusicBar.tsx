@@ -22,9 +22,9 @@ import "../styles/PlayMusicBar.css";
 import "../styles/MusicBarWaveform.css";
 
 export default function PlayMusicBar() {
-  const {setCurrentTrack, play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist} =
+  const {play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist, currentImageUrl} =
     useTrack();
-  const audio = useRef(new Audio(currentMusicUrl));
+  const audio = useRef(new Audio());
 
   const [duration, setDuration] = useState(0);
 
@@ -34,7 +34,6 @@ export default function PlayMusicBar() {
   const handleSeek = (time: number) => {
     if (audio) {
       audio.current.currentTime = time;
-      console.log("Jumping to:", time, "seconds");
     }
   };
 
@@ -56,7 +55,6 @@ export default function PlayMusicBar() {
   };
 
   const handlePlayClick = () => {
-    setCurrentTrack(currentTrackId, currentMusicUrl, title, artist);
     play();
   };
 
@@ -65,30 +63,11 @@ export default function PlayMusicBar() {
   };
 
   useEffect(() => {
-    if (isPlaying) {
-      audio.current.play();
-    } else {
-      audio.current.pause();
+    if (!currentMusicUrl) {
+      return;
     }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    const handleTimeUpdate = () => {
-      console.log("Time updated:", audio.current.currentTime);
-      if (positionDisplayRef.current && audio.current) {
-        positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
-      }
-
-    };
-    audio.current.addEventListener("timeupdate", handleTimeUpdate);
-
-
-    return () => {
-      audio.current.removeEventListener("timeupdate", handleTimeUpdate);
-    };
-  }, []);
-
-  useEffect(() => {
+    
+    console.log("play music bar now url: " + currentMusicUrl);
     // Create or re-create the audio object
     const newAudio = new Audio(currentMusicUrl);
     audio.current = newAudio;
@@ -99,10 +78,9 @@ export default function PlayMusicBar() {
         positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
       }
     };
-
+    
     // Attach the event listener to the new audio object
     newAudio.addEventListener("timeupdate", handleTimeUpdate);
-
     return () => {
       newAudio.removeEventListener("timeupdate", handleTimeUpdate);
       newAudio.pause();
@@ -110,6 +88,20 @@ export default function PlayMusicBar() {
     };
 
   }, [currentMusicUrl]);
+
+  useEffect(() => {
+    const handleTimeUpdate = () => {
+      console.log("Time updated:", audio.current.currentTime);
+      if (positionDisplayRef.current && audio.current) {
+        positionDisplayRef.current.textContent = formatDuration(audio.current.currentTime);
+      }
+    };
+    audio.current.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      audio.current.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, []);
 
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",
@@ -156,7 +148,9 @@ export default function PlayMusicBar() {
           </div>
 
           <div className="MusicInfo">
-            <div className="SongImage"></div>
+            <div className="SongImage">
+              <img src = {currentImageUrl} alt={title} style={{ borderRadius: "10px", width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
 
             <div className="TextInfo">
               <div className="SongName">{title}</div>
