@@ -25,7 +25,9 @@ export default function PlayMusicBar() {
   const {play, pause, isPlaying, currentMusicUrl, currentTrackId, title, artist, currentImageUrl} =
     useTrack();
   const audio = useRef(new Audio());
+
   const [duration, setDuration] = useState(0);
+
   const [volume, setVolume] = useState(30);
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
@@ -34,6 +36,7 @@ export default function PlayMusicBar() {
       audio.current.currentTime = time;
     }
   };
+
 
   function formatDuration(seconds: number) {
     const minutes = Math.floor(seconds / 60);
@@ -44,6 +47,7 @@ export default function PlayMusicBar() {
   const handleDurationChange = (newDuration: number) => {
     setDuration(newDuration);
   };
+
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     const newVolume = Array.isArray(newValue) ? newValue[0] : newValue;
@@ -82,6 +86,7 @@ export default function PlayMusicBar() {
       newAudio.pause();
       newAudio.currentTime = 0;
     };
+
   }, [currentMusicUrl]);
 
   useEffect(() => {

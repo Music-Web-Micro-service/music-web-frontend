@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import { Slider, Stack, Toolbar } from "@mui/material";
 import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -16,16 +15,17 @@ import { downloadMusic } from "../apis/MeidaApis";
 import { useTrack } from "../hook/TrackHook";
 import "../styles/PlayTrack.css";
 import "../styles/TrackWaveform.css";
+import { Waveform } from "./Waveform";
 
 type PlayTrackProps = {
-    trackId: number;
-    musicResourceId: number;
-    imageUrl: string;
-    title: string;
-    artist: string;
-    artistId: number;
-    musicUrl: string;
-    duration: number;
+  trackId: number;
+  musicResourceId: number;
+  imageUrl: string;
+  title: string;
+  artist: string;
+  artistId: number;
+  musicUrl: string;
+  duration: number;
 };
 
 export default function PlayTrack(props: PlayTrackProps) {
@@ -55,11 +55,25 @@ export default function PlayTrack(props: PlayTrackProps) {
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
+  function formatDuration(seconds: number) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  }
 
   const handleDurationChange = (newDuration: number) => {
     setDuration(newDuration);
   };
+  const handleDurationChange = (newDuration: number) => {
+    setDuration(newDuration);
+  };
 
+  const TinyText = styled(Typography)({
+    fontSize: "1.0rem",
+    opacity: 0.38,
+    fontWeight: 500,
+    letterSpacing: 0.2,
+  });
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",
     opacity: 0.38,
@@ -80,6 +94,7 @@ export default function PlayTrack(props: PlayTrackProps) {
       }
     };
 
+    audio.current.addEventListener("timeupdate", handleTimeUpdate);
     audio.current.addEventListener("timeupdate", handleTimeUpdate);
 
     return () => {

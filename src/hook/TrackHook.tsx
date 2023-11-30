@@ -25,6 +25,11 @@ export function useTrack(): TrackContextType {
     throw new Error("useTrack must be used within a TrackProvider");
   }
   return context;
+  const context = useContext(TrackContext);
+  if (!context) {
+    throw new Error("useTrack must be used within a TrackProvider");
+  }
+  return context;
 }
 
 

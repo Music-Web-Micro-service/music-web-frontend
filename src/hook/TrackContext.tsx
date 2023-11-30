@@ -20,7 +20,7 @@ type TrackContextType = {
 export const TrackContext = createContext<TrackContextType | undefined>(undefined);
 
 type TrackProviderProps = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
@@ -43,6 +43,8 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
     setCurrentImageUrl(currentImageUrl);
   };
 
+  const play = () => setIsPlaying(true);
+  const pause = () => setIsPlaying(false);
   const play = () => setIsPlaying(true);
   const pause = () => setIsPlaying(false);
 
