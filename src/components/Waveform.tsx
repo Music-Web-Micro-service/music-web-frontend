@@ -15,7 +15,7 @@ const useWavesurfer = (containerRef: any, url: string) => {
   const wavesurfer = useRef<WaveSurfer | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current || !url) return;
+    if (!containerRef.current) return;
     console.log("useWavesurfer " + url);
     // Create WaveSurfer instance if it doesn't exist
     if (!wavesurfer.current) {
@@ -29,8 +29,17 @@ const useWavesurfer = (containerRef: any, url: string) => {
       });
     }
 
-    // Load the new URL
-    wavesurfer.current.load(url);
+    const loadTrack = async (urlToLoad: string) => {
+      if (urlToLoad !== "" && wavesurfer.current) {
+        try {
+          await wavesurfer.current.load(urlToLoad);
+        } catch (error) {
+          console.error("Error loading track:", error);
+        }
+      }
+    };
+
+    loadTrack(url);
 
     return () => {
       // Only destroy when unmounting the component
@@ -57,69 +66,58 @@ const WaveformComponent: React.FC<WaveformProps> = ({
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useWavesurfer(waveformRef, url);
 
+  // Handle WaveSurfer readiness and initiate playback if needed
   useEffect(() => {
     if (!wavesurfer) return;
-    console.log("Play?" + playing);
-    if (playing) {
-      wavesurfer.play();
-    } else {
-      wavesurfer.pause();
-    }
-  }, [wavesurfer, playing]);
   
-
-  // Event listeners
-  useEffect(() => {
-    if (!wavesurfer) return;
-
-    wavesurfer.on("ready", () => {
+    const handleReady = () => {
       onDurationChange(wavesurfer.getDuration());
-    });
-
-    const handleClick = (event: MouseEvent) => {
-      const bbox = (event.target as HTMLElement).getBoundingClientRect();
-      const progress = (event.clientX - bbox.left) / bbox.width;
-      const clickedPositionInSeconds = progress * wavesurfer.getDuration();
-
-      if (Number.isFinite(clickedPositionInSeconds)) {
-        onSeek(clickedPositionInSeconds);
-      } else {
-        console.error("Invalid clickedPositionInSeconds:", clickedPositionInSeconds);
+      if (playing) {
+        console.log("Auto-starting playback");
+        wavesurfer.play();
       }
     };
-
-    waveformRef.current?.addEventListener("click", handleClick);
+  
+    wavesurfer.on("ready", handleReady);
 
     return () => {
-      waveformRef.current?.removeEventListener("click", handleClick);
+      wavesurfer.un("ready", handleReady);
     };
-  }, [wavesurfer]);
-
-  useEffect(() => {
-    if (wavesurfer) {
-      console.log("useWavesurfer destroy");
-      // wavesurfer.destroy();
-      wavesurfer?.load(url);
-    }
-  }, [url]);
-
-  // Playback and Volume
+  }, [wavesurfer, playing, onDurationChange]);
+  
+  // Load the waveform
   useEffect(() => {
     if (!wavesurfer) return;
+    
+    console.log("Loading new URL into WaveSurfer:", url);
+    wavesurfer.load(url);
+  }, [wavesurfer, url]);
 
+  // Handle play/pause and volume changes
+  useEffect(() => {
+    if (!wavesurfer || !url || url == "") {
+      console.log("WaveSurfer not ready for playback control");
+      return;
+    }
+
+    // Handle volume
     if (volume === 0) {
       wavesurfer.setMuted(true);
     } else {
-      wavesurfer.setMuted(false);
       wavesurfer.setVolume(volume);
+      wavesurfer.setMuted(false);
     }
 
+    // Handle play/pause
     if (playing) {
-      wavesurfer.play();
+      console.log("Playing WaveSurfer");
+      wavesurfer.play().catch((e) => { console.log(e);});
     } else {
+      console.log("Pausing WaveSurfer");
       wavesurfer.pause();
     }
   }, [wavesurfer, playing, volume]);
+
   
   return <div className="waveform" ref={waveformRef}></div>;
 };
