@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -12,52 +12,50 @@ import { HomeSection } from "./pages/home-page/home-section";
 import SignUpPage from "./pages/signup-page";
 
 import "./App.css";
-import Playlist from "./pages/home-page/playlist-section/Playlist";
+import Playlist from "./pages/home-page/Playlist-section/Playlist";
+import { useTrack } from "./hook/TrackHook";
+import PlayMusicBar from "./components/PlayMusicBar";
+import { TrackProvider } from "./hook/TrackContext";
+import AlbumSection from "./pages/home-page/Album-section/AlbumSection";
 
 
 
 const App: React.FC = () => {
   // handleResize = () => {};
-  return (
-
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/" element={<HomePage />} >
-            <Route path="/" index element={<HomeSection />} />
-            <Route path="/favorite" element={<Favorite />} />
-            <Route path="/download-history" element={<DownloadHistory />} />
-            <Route path="/new-playlist" element={<Playlist />} />
-          </Route>
-        </Routes>
+  const MusicBarComponent = () => {
+    const { currentMusicUrl } = useTrack();
+    // const [hasPlayed, setHasPlayed] = useState(false);
   
-      </BrowserRouter>
-    </ThemeProvider>
+    // // Update hasPlayed state when a track URL is set
+    // useEffect(() => {
+    //   if (currentMusicUrl) {
+    //     setHasPlayed(true);
+    //   }
+    // }, [currentMusicUrl]);
+  
+    // Render PlayMusicBar only if a track has been played or is currently playing
+    return <>{<PlayMusicBar />}</>;
+  };
 
-  //     <!--     <TrackProvider>
-  //   <ThemeProvider theme={theme}>
-  //     <Router>
-  //       <Box className="app-container" display={"flex"} flexDirection={"row"} width={1}>
-  //         <Nav />
-  //         <Box display={"flex"} flexDirection={"column"} width={1}>
-  //           <HomeTabs></HomeTabs>
-  //           <Box className="main-content">
-  //             <Routes>
-  //               <Route path="/" element={<Home />} />
-  //               <Route path="/favorite" element={<Favorite />} />
-  //               <Route path="/download-history" element={<DownloadHistory />} />
-  //               <Route path="/playlist" element={<Playlist />} />
-  //             </Routes>
-  //           </Box>
-  //         </Box>
-  //       </Box>
-  //     </Router>
-  //     <MusicBarComponent />
-  //   </ThemeProvider>
-  // </TrackProvider> -->
-
+  return (
+    <TrackProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/" element={<HomePage />} >
+              <Route path="/" index element={<HomeSection />} />
+              <Route path="/favorite" element={<Favorite />} />
+              <Route path="/download-history" element={<DownloadHistory/>} />
+              <Route path="/new-playlist" element={<Playlist/>} />
+            </Route>
+          </Routes>
+          <MusicBarComponent />
+        </BrowserRouter>
+      </ThemeProvider>
+    </TrackProvider>
   );
+  
 };
 
 
