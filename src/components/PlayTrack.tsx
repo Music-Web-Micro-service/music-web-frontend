@@ -13,9 +13,9 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import { Waveform } from "./Waveform";
 import { downloadMusic } from "../apis/MeidaApis";
 import { useTrack } from "../hook/TrackHook";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../styles/PlayTrack.css";
 import "../styles/TrackWaveform.css";
-import { Waveform } from "./Waveform";
 
 type PlayTrackProps = {
   trackId: number;
@@ -55,25 +55,11 @@ export default function PlayTrack(props: PlayTrackProps) {
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
-  function formatDuration(seconds: number) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  }
 
   const handleDurationChange = (newDuration: number) => {
     setDuration(newDuration);
   };
-  const handleDurationChange = (newDuration: number) => {
-    setDuration(newDuration);
-  };
 
-  const TinyText = styled(Typography)({
-    fontSize: "1.0rem",
-    opacity: 0.38,
-    fontWeight: 500,
-    letterSpacing: 0.2,
-  });
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",
     opacity: 0.38,

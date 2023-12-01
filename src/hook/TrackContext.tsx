@@ -45,8 +45,6 @@ export const TrackProvider: React.FC<TrackProviderProps> = ({ children }) => {
 
   const play = () => setIsPlaying(true);
   const pause = () => setIsPlaying(false);
-  const play = () => setIsPlaying(true);
-  const pause = () => setIsPlaying(false);
 
   return (
     <TrackContext.Provider value={{ 
