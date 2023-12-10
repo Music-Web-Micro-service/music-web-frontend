@@ -26,6 +26,7 @@ export default function PlayMusicBar() {
     useTrack();
   const audio = useRef(new Audio());
 
+  const [isDisabled, setIsDisabled] = useState(true);
   const [duration, setDuration] = useState(0);
 
   const [volume, setVolume] = useState(30);
@@ -36,7 +37,6 @@ export default function PlayMusicBar() {
       audio.current.currentTime = time;
     }
   };
-
 
   function formatDuration(seconds: number) {
     const minutes = Math.floor(seconds / 60);
@@ -71,6 +71,7 @@ export default function PlayMusicBar() {
     // Create or re-create the audio object
     const newAudio = new Audio(currentMusicUrl);
     audio.current = newAudio;
+    setIsDisabled(currentMusicUrl === "");
 
     const handleTimeUpdate = () => {
       console.log("Time updated:", audio.current.currentTime);
@@ -127,23 +128,24 @@ export default function PlayMusicBar() {
       <ThemeProvider theme={theme}>
         <Toolbar sx={{bgcolor: "#FFF"}}>
           <div className="PlaysButtons">
-            <IconButton className="SkipPrev">
-              <SkipPreviousIcon sx={{color: "#000000", fontSize: "20px"}} />
+            <IconButton className="SkipPrev" disabled={isDisabled}>
+              <SkipPreviousIcon sx={{color: isDisabled ? "#CCCCCC" : "#000000", fontSize: "20px"}} />
             </IconButton>
 
             <Button
               className="PauseButton"
               onClick={isPlaying ? handlePauseClick : handlePlayClick}
+              disabled={isDisabled}
             >
               {isPlaying ? (
-                <PauseCircleFilledIcon sx={{color: "#000000", fontSize: "50px"}} />
+                <PauseCircleFilledIcon sx={{color: isDisabled ? "#CCCCCC" : "#000000", fontSize: "50px"}} />
               ) : (
-                <PlayCircleFilledWhiteIcon sx={{color: "#000000", fontSize: "50px"}} />
+                <PlayCircleFilledWhiteIcon sx={{color: isDisabled ? "#CCCCCC" : "#000000", fontSize: "50px"}} />
               )}
             </Button>
 
-            <IconButton className="SkipNext">
-              <SkipNextIcon sx={{color: "#000000", fontSize: "20px"}} />
+            <IconButton className="SkipNext" disabled={isDisabled}>
+              <SkipNextIcon sx={{color: isDisabled ? "#CCCCCC" : "#000000", fontSize: "20px"}} />
             </IconButton>
           </div>
 
