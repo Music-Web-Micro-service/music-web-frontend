@@ -56,10 +56,13 @@ export default function PlayMusicBar() {
 
   const handlePlayClick = () => {
     play();
+    audio.current.volume = 0;
+    audio.current.play();
   };
 
   const handlePauseClick = () => {
     pause();
+    audio.current.pause();
   };
 
   useEffect(() => {
@@ -103,6 +106,14 @@ export default function PlayMusicBar() {
       audio.current.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPlaying) {
+      handlePlayClick();
+    } else {
+      handlePauseClick();
+    }
+  }, [isPlaying]);
 
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",

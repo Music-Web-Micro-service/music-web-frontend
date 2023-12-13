@@ -37,11 +37,14 @@ export default function PlayTrack(props: PlayTrackProps) {
 
   const handlePauseClick = useCallback(() => {
     pause();
+    audio.current.pause();
   }, [pause]);
 
   const handlePlayClick = useCallback(() => {
     setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
     play();
+    audio.current.play();
+    audio.current.volume = 0;
   }, [play]);
 
   const handleSeek = useCallback((time: number) => {
@@ -70,6 +73,7 @@ export default function PlayTrack(props: PlayTrackProps) {
   // set audio source
   useEffect(() => {
     audio.current.src = props.musicUrl;
+    // audio.current.
   }, [props.musicUrl]);
 
   // duration update
