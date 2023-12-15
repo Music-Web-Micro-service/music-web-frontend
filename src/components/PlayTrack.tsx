@@ -35,13 +35,23 @@ export default function PlayTrack(props: PlayTrackProps) {
   const { setCurrentTrack, play, pause, currentTrackId, isPlaying } = useTrack();
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
+  const [resetWaveformPosition, setResetWaveformPosition] = useState(false);
+
   const handlePauseClick = useCallback(() => {
     pause();
     audio.current.pause();
+    setResetWaveformPosition(false);
   }, [pause]);
 
   const handlePlayClick = useCallback(() => {
     setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
+    if (currentTrackId !== props.trackId) { 
+      if (audio.current) {
+        console.log("reset ! " + currentTrackId);
+        setResetWaveformPosition(true);
+        audio.current.currentTime = 0;
+      }
+    }
     play();
     audio.current.play();
     audio.current.volume = 0;
@@ -141,6 +151,7 @@ export default function PlayTrack(props: PlayTrackProps) {
               volume={0}
               onDurationChange={handleDurationChange}
               curComponent={"PlayTrack"}
+              resetPosition = {resetWaveformPosition}
             />
 
 

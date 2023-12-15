@@ -32,6 +32,8 @@ export default function PlayMusicBar() {
   const [volume, setVolume] = useState(30);
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
+  const [resetWaveformPosition, setResetWaveformPosition] = useState(false);
+
   const handleSeek = (time: number) => {
     if (audio) {
       audio.current.currentTime = time;
@@ -179,6 +181,7 @@ export default function PlayMusicBar() {
             volume={volume / 100}
             onDurationChange={handleDurationChange}
             curComponent={"PlayMusicBar"}
+            resetPosition = {resetWaveformPosition}
             //onPositionChange={handlePositionChange}
           />
 
