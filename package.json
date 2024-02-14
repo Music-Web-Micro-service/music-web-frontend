@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/manjari": "^5.0.18",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -51,6 +52,5 @@
   },
   "main": "index.js",
   "author": "Sma1lboy <541898146chen@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {}
+  "license": "MIT"
 }
