@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import {PlayArrow} from "@mui/icons-material";
+import {Box, IconButton, Typography} from "@mui/material";
 import React from "react";
-import { Track } from "../../../components/TrackTable";
+import {Track} from "../../../components/TrackTable";
 let id = 0;
 let mokedata = () => {
   let list = [];
@@ -28,10 +29,11 @@ let blockStyle: React.CSSProperties = {
 };
 let blocksContainnerStyle: React.CSSProperties = {
   width: "100%",
-  height: "150px",
+  height: "inherit",
   display: "flex",
   flexDirection: "row",
-  overflowX: "scroll",
+  overflow: "hidden",
+  position: "absolute",
 };
 let categoryStyle: React.CSSProperties = {
   width: "100%",
@@ -50,21 +52,35 @@ let tracks: Track[] = [
     duration: 2,
   },
 ];
+type TrendingListProps = {
+  title: string;
+  songs: React.ReactNode[];
+};
+let TrendingList: React.FC<TrendingListProps> = ({title, songs}) => {
+  return (
+    <Box sx={categoryStyle}>
+      <Typography variant="h5" fontWeight={700} marginBottom={"20px"}>
+        {title}
+      </Typography>
+      <Box sx={{display: "block", position: "relative", height: "150px"}}>
+        <Box sx={blocksContainnerStyle}>{songs}</Box>
+        <IconButton sx={{top: "50px", backgroundColor: "rgba(0,0,0,.5)"}}>
+          <PlayArrow sx={{transform: "scaleX(-1)"}}></PlayArrow>
+        </IconButton>
+        <IconButton sx={{top: "50px", backgroundColor: "rgba(0,0,0,.5)", right: "-95%"}}>
+          <PlayArrow></PlayArrow>
+        </IconButton>
+      </Box>
+    </Box>
+  );
+};
+
 export const HomeSection: React.FC = () => {
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={categoryStyle}>
-        <Typography variant="h5" fontWeight={700} marginBottom={"20px"}>
-          Themes
-        </Typography>
-        <Box sx={blocksContainnerStyle}>{mokedata()}</Box>
-      </Box>
-      <Box sx={categoryStyle}>
-        <Typography variant="h5" fontWeight={700} marginBottom={"20px"}>
-          Generes
-        </Typography>
-        <Box sx={blocksContainnerStyle}>{mokedata()}</Box>
-      </Box>
+    <Box sx={{width: "100%", display: "flex", flexDirection: "column"}}>
+      <TrendingList title="Theme" songs={mokedata()} />
+      <TrendingList title="Theme" songs={mokedata()} />
+
       <Box sx={categoryStyle}>
         <Typography variant="h5" fontWeight={700} marginBottom={"20px"}>
           Trending
@@ -78,7 +94,6 @@ export const HomeSection: React.FC = () => {
             borderRadius: "10px 10px 0px 0px",
           }}
         >
-
           <Box
             sx={{
               display: "flex",
@@ -86,10 +101,9 @@ export const HomeSection: React.FC = () => {
               width: "100%",
               height: "100%",
             }}
-          >
-          </Box>
+          ></Box>
         </Box>
       </Box>
-    </Box >
+    </Box>
   );
 };
