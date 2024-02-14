@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <Box className="app-container" display={"flex"} flexDirection={"row"} width={1}>
       <Nav />
-      <Box display={"flex"} flexDirection={"column"} sx={{width: window.innerWidth - 250}}>
+      <Box display={"flex"} flexDirection={"column"} sx={{ width: window.innerWidth - 250 }}>
         <HomeTabs></HomeTabs>
         <Box className="main-content">
           {/* Outlet makes render route */}
@@ -42,7 +42,7 @@ export default function HomePage() {
 // }
 
 const MusicBarComponent = () => {
-  const {isPlaying} = useTrack();
+  const { isPlaying } = useTrack();
   const [hasPlayed] = useState(true);
   return <>{isPlaying ? <PlayMusicBar /> : hasPlayed && <PlayMusicBar />}</>;
 };

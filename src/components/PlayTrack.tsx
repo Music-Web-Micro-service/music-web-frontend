@@ -121,7 +121,7 @@ export default function PlayTrack(props: PlayTrackProps) {
       }
     }
   });
-                                                                                                                                                                                                                                                                                                                                                                  
+
   // const handlePlayPauseClick = () => {
   //   if (isCurrentPlayingTrack) {
   //     pause();
@@ -158,9 +158,9 @@ export default function PlayTrack(props: PlayTrackProps) {
       setIsCurrentPlayingTrack(true);
     }
   };
-                             
+
   return (
-    <div className="playtrack-hover">            
+    <div className="playtrack-hover">
       <div className="PlayTrack">
         <ThemeProvider theme={theme}>
           <Toolbar sx={{ bgcolor: "#F1F1F1" }}>
@@ -203,7 +203,7 @@ export default function PlayTrack(props: PlayTrackProps) {
               volume={0}
               onDurationChange={handleDurationChange}
               curComponent={"PlayTrack"}
-              resetPosition = {resetWaveformPosition}
+              resetPosition={resetWaveformPosition}
             />
 
 

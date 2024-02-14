@@ -16,7 +16,7 @@ interface NewPlaylistDialogProps {
   onCreate: (name: string, description: string, isPublic: boolean) => void;
 }
 
-const NewPlaylistDialog: React.FC<NewPlaylistDialogProps> = ({open, onClose, onCreate}) => {
+const NewPlaylistDialog: React.FC<NewPlaylistDialogProps> = ({ open, onClose, onCreate }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [playlistDescription, setPlaylistDescription] = useState("");
   const [isPublic, setIsPublic] = useState(true);
