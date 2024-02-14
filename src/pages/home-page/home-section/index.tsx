@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Track } from "../../../components/TrackTable";
-
+let id = 0;
 let mokedata = () => {
   let list = [];
   for (let i = 0; i < 100; i++) {
     list.push(
-      <Box sx={blockStyle}>
+      <Box sx={blockStyle} key={id++}>
         <Typography variant="h6" fontWeight={700} textAlign={"center"}>
           asds
         </Typography>
@@ -52,7 +52,7 @@ let tracks: Track[] = [
 ];
 export const HomeSection: React.FC = () => {
   return (
-    <Box sx={{width: "100%"}}>
+    <Box sx={{ width: "100%" }}>
       <Box sx={categoryStyle}>
         <Typography variant="h5" fontWeight={700} marginBottom={"20px"}>
           Themes
@@ -78,7 +78,7 @@ export const HomeSection: React.FC = () => {
             borderRadius: "10px 10px 0px 0px",
           }}
         >
-          
+
           <Box
             sx={{
               display: "flex",
@@ -87,10 +87,9 @@ export const HomeSection: React.FC = () => {
               height: "100%",
             }}
           >
-            123
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
