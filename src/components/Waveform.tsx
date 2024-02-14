@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import "../styles/MusicBarWaveform.css";
+import { useTrack } from "../hook/TrackHook";
 
 type WaveformProps = {
   onSeek: (time: number) => void;
@@ -8,6 +9,7 @@ type WaveformProps = {
   url: string;
   volume: number;
   curComponent: string;
+  resetPosition: boolean;
   onDurationChange: (duration: number) => void;
 };
 
@@ -60,11 +62,18 @@ const WaveformComponent: React.FC<WaveformProps> = ({
   url,
   volume,
   curComponent,
+  resetPosition,
   onDurationChange,
 }) => {
   const backgroundColor = curComponent === "PlayTrack" ? "#F1F1F1" : "#FFF";
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurfer = useWavesurfer(waveformRef, url);
+
+  useEffect(() => {
+    if (resetPosition && wavesurfer) {
+      wavesurfer.seekTo(0); // Reset to the start
+    }
+  }, [resetPosition]);
 
   // Handle WaveSurfer readiness and initiate playback if needed
   useEffect(() => {

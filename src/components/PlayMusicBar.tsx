@@ -32,6 +32,8 @@ export default function PlayMusicBar() {
   const [volume, setVolume] = useState(30);
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
+  const [resetWaveformPosition, setResetWaveformPosition] = useState(false);
+
   const handleSeek = (time: number) => {
     if (audio) {
       audio.current.currentTime = time;
@@ -56,10 +58,13 @@ export default function PlayMusicBar() {
 
   const handlePlayClick = () => {
     play();
+    audio.current.volume = 0;
+    audio.current.play();
   };
 
   const handlePauseClick = () => {
     pause();
+    audio.current.pause();
   };
 
   useEffect(() => {
@@ -103,6 +108,14 @@ export default function PlayMusicBar() {
       audio.current.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
+
+  useEffect(() => {
+    if (isPlaying) {
+      handlePlayClick();
+    } else {
+      handlePauseClick();
+    }
+  }, [isPlaying]);
 
   const TinyText = styled(Typography)({
     fontSize: "1.0rem",
@@ -168,6 +181,7 @@ export default function PlayMusicBar() {
             volume={volume / 100}
             onDurationChange={handleDurationChange}
             curComponent={"PlayMusicBar"}
+            resetPosition = {resetWaveformPosition}
             //onPositionChange={handlePositionChange}
           />
 

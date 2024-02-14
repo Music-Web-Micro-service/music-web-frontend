@@ -35,14 +35,31 @@ export default function PlayTrack(props: PlayTrackProps) {
   const { setCurrentTrack, play, pause, currentTrackId, isPlaying } = useTrack();
   const positionDisplayRef = useRef<HTMLSpanElement | null>(null);
 
-  const handlePauseClick = useCallback(() => {
-    pause();
-  }, [pause]);
+  const [resetWaveformPosition, setResetWaveformPosition] = useState(false);
 
-  const handlePlayClick = useCallback(() => {
-    setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
-    play();
-  }, [play]);
+  const [isCurrentPlayingTrack, setIsCurrentPlayingTrack] = useState(
+    currentTrackId === props.trackId && isPlaying
+  );
+
+  // const handlePauseClick = useCallback(() => {
+  //   pause();
+  //   audio.current.pause();
+  //   setResetWaveformPosition(false);
+  // }, [pause]);
+
+  // const handlePlayClick = useCallback(() => {
+  //   setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
+  //   if (currentTrackId !== props.trackId) { 
+  //     if (audio.current) {
+  //       console.log("reset ! " + currentTrackId + " " + props.trackId);
+  //       setResetWaveformPosition(true);
+  //       audio.current.currentTime = 0;
+  //     }
+  //   }
+  //   play();
+  //   audio.current.play();
+  //   audio.current.volume = 0;
+  // }, [play]);
 
   const handleSeek = useCallback((time: number) => {
     if (audio.current) {
@@ -67,9 +84,14 @@ export default function PlayTrack(props: PlayTrackProps) {
     letterSpacing: 0.2,
   });
 
+  useEffect(() => {
+    setIsCurrentPlayingTrack(currentTrackId === props.trackId && isPlaying);
+  }, [currentTrackId, isPlaying, props.trackId]);
+
   // set audio source
   useEffect(() => {
     audio.current.src = props.musicUrl;
+    // audio.current.
   }, [props.musicUrl]);
 
   // duration update
@@ -99,9 +121,46 @@ export default function PlayTrack(props: PlayTrackProps) {
       }
     }
   });
+                                                                                                                                                                                                                                                                                                                                                                  
+  // const handlePlayPauseClick = () => {
+  //   if (isCurrentPlayingTrack) {
+  //     pause();
+  //     audio.current.pause(); // Ensure the audio is paused
+  //     setIsCurrentPlayingTrack(false);
+  //     setResetWaveformPosition(false);
+  //   } else {
+  //     setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
+  //     setIsCurrentPlayingTrack(true);
+  //     setResetWaveformPosition(true);
+  //     play();
+  //     audio.current.play(); // Ensure the audio starts playing
+  //     audio.current.volume = 0; // Adjust the volume as needed
+  //   }
+  // };
+  useEffect(() => {
+    if (currentTrackId !== props.trackId) {
+      setResetWaveformPosition(true);
+    } else {
+      setResetWaveformPosition(false);
+    }
+  }, [currentTrackId, props.trackId]);
 
+  const handlePlayPauseClick = () => {
+    if (isCurrentPlayingTrack) {
+      pause();
+      audio.current.pause(); // Ensure the audio is paused
+      setIsCurrentPlayingTrack(false);
+    } else {
+      setCurrentTrack(props.trackId, props.musicResourceId, props.musicUrl, props.title, props.artist, props.imageUrl);
+      play();
+      audio.current.play(); // Ensure the audio starts playing
+      audio.current.volume = 0; // Adjust the volume as needed
+      setIsCurrentPlayingTrack(true);
+    }
+  };
+                             
   return (
-    <div className="playtrack-hover">
+    <div className="playtrack-hover">            
       <div className="PlayTrack">
         <ThemeProvider theme={theme}>
           <Toolbar sx={{ bgcolor: "#F1F1F1" }}>
@@ -109,8 +168,15 @@ export default function PlayTrack(props: PlayTrackProps) {
             <div className="MusicInfo">
               <div className="SongImage">
                 <img src={props.imageUrl} alt={props.title} style={{ borderRadius: "10px", width: "100%", height: "100%", objectFit: "cover" }} />
-                <Button className="PauseButton" onClick={isPlaying ? handlePauseClick : handlePlayClick}>
-                  {isPlaying ? (
+                {/* <Button className="PauseButton" onClick={isCurrentPlayingTrack  ? handlePauseClick : handlePlayClick}>
+                  {isCurrentPlayingTrack ? (
+                    <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                  ) : (
+                    <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
+                  )}
+                </Button> */}
+                <Button className="PauseButton" onClick={handlePlayPauseClick}>
+                  {isCurrentPlayingTrack ? (
                     <PauseCircleFilledIcon sx={{ color: "#000000", fontSize: "50px" }} />
                   ) : (
                     <PlayCircleFilledWhiteIcon sx={{ color: "#000000", fontSize: "50px" }} />
@@ -137,6 +203,7 @@ export default function PlayTrack(props: PlayTrackProps) {
               volume={0}
               onDurationChange={handleDurationChange}
               curComponent={"PlayTrack"}
+              resetPosition = {resetWaveformPosition}
             />
 
 
