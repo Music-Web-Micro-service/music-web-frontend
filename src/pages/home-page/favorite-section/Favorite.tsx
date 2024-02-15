@@ -180,3 +180,4 @@ let Track: React.FC<TrackProps> = ({
   );
 };
 export default Favorite;
+export {Track, TrackList};
