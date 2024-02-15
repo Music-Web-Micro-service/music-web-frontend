@@ -1,11 +1,10 @@
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-import { Avatar, Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import TrackTable, { Track } from "../../../components/TrackTable";
+import {Avatar, Box, Typography} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {useLocation, useParams} from "react-router-dom";
+import TrackTable, {Track} from "../../../components/TrackTable";
 
 import "./Playlist.css";
-
 
 // @Depracted
 type Song = {
@@ -57,11 +56,13 @@ function formatDuration(seconds: number) {
 const Playlist: React.FC = () => {
   const location = useLocation();
   const [playlistDetails, setPlaylistDetails] = useState<PlaylistDetails>(defaultPlaylistDetails);
-
+  const params = useParams();
+  const slug = params.slug;
   const query = new URLSearchParams(location.search);
   const playlistNameSlug = query.get("list");
 
   useEffect(() => {
+    console.log(slug);
     const fetchPlaylistDetails = async (nameSlug: string | null) => {
       if (nameSlug) {
         const playlistName = decodeURIComponent(nameSlug.replace(/-/g, " "));
