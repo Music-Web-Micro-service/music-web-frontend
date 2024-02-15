@@ -1,12 +1,10 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DownloadIcon from "@mui/icons-material/GetApp";
-import HomeIcon from "@mui/icons-material/Home";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import {ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
 import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import "./Nav.css";
 
+import {DownloadOutlined, FavoriteBorderOutlined, HomeOutlined} from "@mui/icons-material";
 import NewPlaylistDialog from "./pages/home-page/NewPlaylistDialog";
 
 type Playlist = {
@@ -56,7 +54,7 @@ const Nav: React.FC = () => {
           <ButtonBase component={Link} to="/" className={`button-base ${getActiveClass("/")}`}>
             <ListItem>
               <ListItemIcon>
-                <HomeIcon />
+                <HomeOutlined />
               </ListItemIcon>
               <ListItemText primary="Home" />
             </ListItem>
@@ -68,7 +66,7 @@ const Nav: React.FC = () => {
           >
             <ListItem>
               <ListItemIcon>
-                <FavoriteIcon />
+                <FavoriteBorderOutlined />
               </ListItemIcon>
               <ListItemText primary="Favorite" />
             </ListItem>
@@ -80,7 +78,7 @@ const Nav: React.FC = () => {
           >
             <ListItem>
               <ListItemIcon>
-                <DownloadIcon />
+                <DownloadOutlined />
               </ListItemIcon>
               <ListItemText primary="Download History" />
             </ListItem>
