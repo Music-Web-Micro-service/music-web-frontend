@@ -103,7 +103,7 @@ let TrackList: React.FC<TrackListProps> = ({children}) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        width: 0.9,
+        width: 1,
         backgroundColor: "rgba(0,0,0,0.1)",
         borderRadius: "5px",
       }}

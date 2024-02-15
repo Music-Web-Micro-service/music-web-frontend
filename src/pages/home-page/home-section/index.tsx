@@ -1,7 +1,7 @@
 import {PlayArrow} from "@mui/icons-material";
 import {Box, IconButton, Typography} from "@mui/material";
 import React from "react";
-import {Track} from "../../../components/TrackTable";
+import {Track, TrackList} from "../favorite-section/Favorite";
 let id = 0;
 let mokedata = () => {
   let list = [];
@@ -40,7 +40,7 @@ let categoryStyle: React.CSSProperties = {
   marginBottom: "40px",
   height: "30%",
 };
-let tracks: Track[] = [
+let tracks = [
   {
     trackId: 1,
     title: "123",
@@ -86,23 +86,11 @@ export const HomeSection: React.FC = () => {
           Trending
         </Typography>
         {/* 这里的px到时候需要改 */}
-        <Box
-          sx={{
-            width: 1,
-            height: 200,
-            backgroundColor: "rgb(0,0,0,.1)",
-            borderRadius: "10px 10px 0px 0px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              height: "100%",
-            }}
-          ></Box>
-        </Box>
+
+        <TrackList>
+          <Track /> <Track />
+          <Track />
+        </TrackList>
       </Box>
     </Box>
   );
