@@ -1,5 +1,5 @@
-import {createTheme} from "@mui/material";
-
+import { createTheme } from "@mui/material";
+import "@fontsource/manjari";
 const theme = createTheme({
   palette: {
     primary: {
@@ -7,7 +7,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ["Montserrat", "sans-serif"].join(","),
+    fontFamily: ["Manjari", "Montserrat", "sans-serif"].join(","),
   },
 });
 export default theme;
