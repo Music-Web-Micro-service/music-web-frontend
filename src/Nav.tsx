@@ -2,18 +2,18 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DownloadIcon from "@mui/icons-material/GetApp";
 import HomeIcon from "@mui/icons-material/Home";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
-import { ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {ButtonBase, Divider, List, ListItem, ListItemIcon, ListItemText} from "@mui/material";
+import React, {useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import "./Nav.css";
 
 import NewPlaylistDialog from "./pages/home-page/NewPlaylistDialog";
+import {createPlaylist} from "../src/apis/PlaylistApis";
 
 type Playlist = {
   id: number;
   name: string;
   description: string;
-  isPublic: boolean;
 };
 
 const Nav: React.FC = () => {
@@ -23,28 +23,44 @@ const Nav: React.FC = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
 
-  const handleCreatePlaylist = (name: string, description: string, isPublic: boolean) => {
-    const newPlaylist = {
-      id: playlists.length + 1, // Simple ID assignment; replace with unique ID generation if needed
-      name,
-      description,
-      isPublic,
-    };
-    // Add the new playlist to the list of playlists
-    setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-    setIsDialogOpen(false);
+  const getUserId = () => {
+    // TODO: This is only a fake data, should be updated after adding login logic
+    return 1;
+  };
+
+  const handleNewPlaylistClick = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCreatePlaylist = async (name: string, description: string) => {
+    try {
+      const userId = getUserId();
+      const response = await createPlaylist(userId, name, description);
+      const newPlaylist = response.data;
+
+      setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error creating playlist:", error);
+    }
   };
 
   const handleSelectPlaylist = (playlist: Playlist) => {
     setSelectedPlaylistId(playlist.id);
-    // Create a slug from the playlist name
     const playlistSlug = encodeURIComponent(playlist.name.replace(/\s+/g, "-").toLowerCase());
     navigate(`/playlist?list=${playlistSlug}`);
   };
 
   const getActiveClass = (path: string, playlistId?: number) => {
-    // Check if the current path or the selected playlist ID matches
-    return location.pathname === path || playlistId === selectedPlaylistId ? "active" : "";
+    if (location.pathname === path) {
+      return "active";
+    }
+
+    if (playlistId && location.search.includes(`list=${playlistId}`)) {
+      return "active";
+    }
+
+    return "";
   };
 
   return (
@@ -86,7 +102,7 @@ const Nav: React.FC = () => {
           </ButtonBase>
           <Divider />
           <ButtonBase
-            onClick={() => setIsDialogOpen(true)}
+            onClick={handleNewPlaylistClick}
             className={`button-base ${getActiveClass("/new-playlist")}`}
           >
             <ListItem>
